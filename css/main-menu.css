@@ -1,4 +1,4 @@
-/* Center the username input form on screen */
+/* Username validation */
 #username-input-container {
   height: 100vh;
   display: flex;
@@ -6,7 +6,6 @@
   align-items: center;
   background-color: #f7f9fc;
 }
-
 #username-validation-form {
   background: white;
   padding: 2rem;
@@ -17,37 +16,81 @@
   gap: 1rem;
   width: 300px;
 }
-
 #username-validation-form label {
   font-size: 1.1rem;
   font-weight: 500;
 }
-
 #username-validation-form input {
   padding: 0.6rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
-
 #username-validation-form button {
   padding: 0.6rem;
-  background-color: #007bff;
+  background-color: #873afb;
   color: white;
   border: none;
   font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease transform 0.15s ease;
 }
-
 #username-validation-form button:hover {
-  background-color: #0056b3;
+  background-color: #fc8734;
 }
 
-#username-validation-error-message {
-  margin-top: 0.5rem;
-  color: red;
-  font-size: 0.9rem;
-  text-align: center;
+/* Main menu */
+#league-selection-container {
+  height: 100vh;
+  background-color: #f7f9fc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#league-selection-form {
+  background: white;
+  padding: 2rem 2.5rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  max-width: 700px;
+}
+
+#league-selection-form h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+/* Grid layout for buttons */
+.league-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.league-buttons button {
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: #873afb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+.league-buttons button:hover {
+  background-color: #fc8734;
+}
+
+.league-buttons button:active {
+  transform: scale(0.97);
 }

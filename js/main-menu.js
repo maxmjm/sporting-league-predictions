@@ -25,9 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
       usernameInputContainer.style.display = "none";
       mainMenu.style.display = "block";
       leagueSelectionMenu.style.display = "block";
-      usernameErrorMessage.style.display = "none";
     } else {
-      usernameErrorMessage.style.display = "block";
+      alert("Please enter a valid username!");
     }
   });
 });

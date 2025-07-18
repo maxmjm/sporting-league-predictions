@@ -26,38 +26,36 @@
         />
         <button type="submit">Submit</button>
       </form>
-      <!-- Error message for invalid username -->
-      <div
-        id="username-validation-error-message"
-        style="color: red; display: none"
-      >
-        Please enter a valid username.
-      </div>
     </div>
-    <!-- Main menu (hidden until username is entered) -->
-    <div id="main-menu" style="display: none">
-      <header>
-        <h1>Sporting League Predictions</h1>
-      </header>
-      <main>
-        <div id="league-selection-menu" style="display: none">
-          <h2>Select a League</h2>
-          <!-- Buttons for different leagues -->
-          <button onclick="showInDevelopment()">AFL Post Season</button>
-          <button onclick="showInDevelopment()">AFL Premiership Season</button>
-          <button onclick="showInDevelopment()">
+    <!-- Menu to select sporting league (hidden until username is entered) -->
+    <div id="league-selection-container">
+      <form id="league-selection-form">
+        <h2>Sporting Leagues</h2>
+        <div class="league-buttons">
+          <button type="button" onclick="showInDevelopment()">
+            AFL Post Season
+          </button>
+          <button type="button" onclick="showInDevelopment()">
+            AFL Premiership Season
+          </button>
+          <button type="button" onclick="showInDevelopment()">
             Champions League Post Season
           </button>
-          <button onclick="showInDevelopment()">
+          <button type="button" onclick="showInDevelopment()">
             Champions League Regular Season
           </button>
-          <button onclick="showInDevelopment()">NBA Post Season</button>
-          <button onclick="navigateToPage('nba-regular-season.html')">
+          <button type="button" onclick="showInDevelopment()">
+            NBA Post Season
+          </button>
+          <button
+            type="button"
+            onclick="navigateToPage('nba-regular-season.html')"
+          >
             NBA Regular Season
           </button>
-          <button onclick="showInDevelopment()">World Cup</button>
+          <button type="button" onclick="showInDevelopment()">World Cup</button>
         </div>
-      </main>
+      </form>
     </div>
   </body>
 </html>
