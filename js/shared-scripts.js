@@ -1,5 +1,6 @@
 // Wait for the DOM to fully load before executing scripts
 document.addEventListener("DOMContentLoaded", function () {
+  // DOM elements for username validation and league selection
   const usernameForm = document.getElementById("username-validation-form");
   const usernameInputField = document.getElementById(
     "username-validation-field"
@@ -17,11 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     const enteredUsername = usernameInputField.value.trim();
 
+    // Validate username input
     if (enteredUsername.length > 0) {
-      usernameInputSection.style.display = "none";
-      leagueSelectionMenu.style.display = "block";
+      usernameInputSection.style.display = "none"; // Hide username input section
+      leagueSelectionMenu.style.display = "block"; // Show league selection menu
     } else {
-      usernameErrorMessage.style.display = "block";
+      usernameErrorMessage.style.display = "block"; // Display error message
     }
   });
 });
