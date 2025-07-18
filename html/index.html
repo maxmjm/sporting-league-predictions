@@ -4,39 +4,53 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sporting League Predictions</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="../js/script.js"></script>
+    <link rel="stylesheet" href="../css/shared-styles.css" />
+    <link rel="stylesheet" href="../css/main-menu.css" />
+    <script src="../js/shared-scripts.js"></script>
   </head>
   <body>
     <header>
+      <!-- Main page title -->
       <h1>Sporting League Predictions</h1>
     </header>
     <main>
-      <!-- Form to validate username -->
-      <div id="username-container">
-        <form id="username-form">
-          <label for="username">Enter your username:</label>
-          <input type="text" id="username" name="username" required />
-          <button type="submit">Submit</button>
+      <!-- Container for username input -->
+      <div id="username-input-container">
+        <form id="username-validation-form">
+          <!-- Label and input field for username -->
+          <label for="username-validation-field">Enter your username:</label>
+          <input
+            type="text"
+            id="username-validation-field"
+            name="username"
+            required
+          />
+          <!-- Submit button for username -->
+          <button type="submit-username">Submit</button>
         </form>
-        <div id="error-message" style="color: red; display: none">
+        <!-- Error message displayed if username validation fails -->
+        <div
+          id="username-validation-error-message"
+          style="color: red; display: none"
+        >
           Please enter a valid username.
         </div>
       </div>
-      <!-- Menu to select sporting league (initially hidden) -->
-      <div id="menu-container" style="display: none">
+      <!-- Container for league selection menu (hidden by default) -->
+      <div id="league-selection-menu" style="display: none">
         <h2>Select a League</h2>
-        <button onclick="navigateToPage('nba-regular-season.html')">
-          NBA Regular Season
-        </button>
-        <button onclick="showInDevelopment()">NBA Post Season</button>
-        <button onclick="showInDevelopment()">AFL Premiership Season</button>
+        <!-- Buttons to navigate to different league pages -->
         <button onclick="showInDevelopment()">AFL Post Season</button>
+        <button onclick="showInDevelopment()">AFL Premiership Season</button>
+        <button onclick="showInDevelopment()">
+          Champions League Post Season
+        </button>
         <button onclick="showInDevelopment()">
           Champions League Regular Season
         </button>
-        <button onclick="showInDevelopment()">
-          Champions League Post Season
+        <button onclick="showInDevelopment()">NBA Post Season</button>
+        <button onclick="navigateToPage('nba-regular-season.html')">
+          NBA Regular Season
         </button>
         <button onclick="showInDevelopment()">World Cup</button>
       </div>
