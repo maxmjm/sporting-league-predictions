@@ -4,56 +4,60 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sporting League Predictions</title>
+    <!-- Shared styles for consistent design -->
     <link rel="stylesheet" href="../css/shared-styles.css" />
-    <link rel="stylesheet" href="../css/main-menu.css" />
+    <!-- Shared scripts for common functionality -->
     <script src="../js/shared-scripts.js" defer></script>
+    <!-- Specific styles for the main menu -->
+    <link rel="stylesheet" href="../css/main-menu.css" />
+    <!-- Specific scripts for the main menu functionality -->
+    <script src="../js/main-menu.js" defer></script>
   </head>
   <body>
-    <header>
-      <!-- Main page title -->
-      <h1>Sporting League Predictions</h1>
-    </header>
-    <main>
-      <!-- Container for username input -->
-      <div id="username-input-container">
-        <form id="username-validation-form">
-          <!-- Label and input field for username -->
-          <label for="username-validation-field">Enter your username:</label>
-          <input
-            type="text"
-            id="username-validation-field"
-            name="username"
-            required
-          />
-          <!-- Submit button for username -->
-          <button type="submit">Submit</button>
-        </form>
-        <!-- Error message displayed if username validation fails -->
-        <div
-          id="username-validation-error-message"
-          style="color: red; display: none"
-        >
-          Please enter a valid username.
+    <!-- Username input section -->
+    <div id="username-input-container">
+      <form id="username-validation-form">
+        <label for="username-validation-field">Enter your username:</label>
+        <input
+          type="text"
+          id="username-validation-field"
+          name="username"
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <!-- Error message for invalid username -->
+      <div
+        id="username-validation-error-message"
+        style="color: red; display: none"
+      >
+        Please enter a valid username.
+      </div>
+    </div>
+    <!-- Main menu (hidden until username is entered) -->
+    <div id="main-menu" style="display: none">
+      <header>
+        <h1>Sporting League Predictions</h1>
+      </header>
+      <main>
+        <div id="league-selection-menu" style="display: none">
+          <h2>Select a League</h2>
+          <!-- Buttons for different leagues -->
+          <button onclick="showInDevelopment()">AFL Post Season</button>
+          <button onclick="showInDevelopment()">AFL Premiership Season</button>
+          <button onclick="showInDevelopment()">
+            Champions League Post Season
+          </button>
+          <button onclick="showInDevelopment()">
+            Champions League Regular Season
+          </button>
+          <button onclick="showInDevelopment()">NBA Post Season</button>
+          <button onclick="navigateToPage('nba-regular-season.html')">
+            NBA Regular Season
+          </button>
+          <button onclick="showInDevelopment()">World Cup</button>
         </div>
-      </div>
-      <!-- Container for league selection menu (hidden by default) -->
-      <div id="league-selection-menu" style="display: none">
-        <h2>Select a League</h2>
-        <!-- Buttons to navigate to different league pages -->
-        <button onclick="showInDevelopment()">AFL Post Season</button>
-        <button onclick="showInDevelopment()">AFL Premiership Season</button>
-        <button onclick="showInDevelopment()">
-          Champions League Post Season
-        </button>
-        <button onclick="showInDevelopment()">
-          Champions League Regular Season
-        </button>
-        <button onclick="showInDevelopment()">NBA Post Season</button>
-        <button onclick="navigateToPage('nba-regular-season.html')">
-          NBA Regular Season
-        </button>
-        <button onclick="showInDevelopment()">World Cup</button>
-      </div>
-    </main>
+      </main>
+    </div>
   </body>
 </html>

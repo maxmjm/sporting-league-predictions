@@ -38,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   // DOM containers for team forms and player awards
-  const easternConferenceContainer = document.getElementById(
+  const easternConferenceTeamsContainer = document.getElementById(
     "eastern-conference-teams"
   );
-  const westernConferenceContainer = document.getElementById(
+  const westernConferenceTeamsContainer = document.getElementById(
     "western-conference-teams"
   );
   const playerAwardsContainer = document.getElementById("player-awards");
@@ -60,19 +60,19 @@ document.addEventListener("DOMContentLoaded", function () {
           .replace(/\s+/g, "-")
           .toLowerCase()}" name="seed" min="1" max="15" required />
         <br />
-        <label for="wins-${teamName
+        <label for="win-total-${teamName
           .replace(/\s+/g, "-")
           .toLowerCase()}">Win Total:</label>
-        <input type="number" id="wins-${teamName
+        <input type="number" id="win-total-${teamName
           .replace(/\s+/g, "-")
-          .toLowerCase()}" name="wins" min="0" max="82" required />
+          .toLowerCase()}" name="win-total" min="0" max="82" required />
         <br />
-        <label for="big-call-${teamName
+        <label for="bold-prediction-${teamName
           .replace(/\s+/g, "-")
-          .toLowerCase()}">Big Call:</label>
-        <textarea id="big-call-${teamName
+          .toLowerCase()}">Bold Prediction:</label>
+        <textarea id="bold-prediction-${teamName
           .replace(/\s+/g, "-")
-          .toLowerCase()}" name="big-call" rows="3" placeholder="e.g., Cooper Flagg all-star rookie season."></textarea>
+          .toLowerCase()}" name="bold-prediction" rows="3" placeholder="e.g., Cooper Flagg all-star rookie season."></textarea>
         <br />
         <button type="submit">Save</button>
       </form>
@@ -82,44 +82,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Render prediction forms for Eastern Conference teams
   easternConferenceTeams.forEach((team) => {
-    easternConferenceContainer.appendChild(createTeamPredictionForm(team));
+    easternConferenceTeamsContainer.appendChild(createTeamPredictionForm(team));
   });
 
   // Render prediction forms for Western Conference teams
   westernConferenceTeams.forEach((team) => {
-    westernConferenceContainer.appendChild(createTeamPredictionForm(team));
+    westernConferenceTeamsContainer.appendChild(createTeamPredictionForm(team));
   });
 
   // Function to create player awards prediction form
-  function createPlayerAwardPredictionForm() {
-    const playerFormContainer = document.createElement("div");
-    playerFormContainer.classList.add("player-awards-prediction-form");
-    playerFormContainer.innerHTML = `
+  function createPlayerAwardsPredictionForm() {
+    const playerAwardsFormContainer = document.createElement("div");
+    playerAwardsFormContainer.classList.add("player-awards-prediction-form");
+    playerAwardsFormContainer.innerHTML = `
       <form>
-        <label for="mvp-player">Most Valuable Player:</label>
-        <input type="text" id="mvp-player" name="mvp-player" placeholder="Enter player name" required />
-        <br />
-        <label for="rookie-player">Rookie of the Year:</label>
-        <input type="text" id="rookie-player" name="rookie-player" placeholder="Enter player name" required />
+        <label for="clutch-player">Clutch Player of the Year:</label>
+        <input type="text" id="clutch-player" name="clutch-player" placeholder="Enter player name" required />
         <br />
         <label for="defensive-player">Defensive Player of the Year:</label>
         <input type="text" id="defensive-player" name="defensive-player" placeholder="Enter player name" required />
         <br />
-        <label for="most-improved-player">Most Improved:</label>
+        <label for="most-valuable-player">Most Valuable Player:</label>
+        <input type="text" id="most-valuable-player" name="most-valuable-player" placeholder="Enter player name" required />
+        <br />
+        <label for="most-improved-player">Most Improved Player:</label>
         <input type="text" id="most-improved-player" name="most-improved-player" placeholder="Enter player name" required />
         <br />
-        <label for="sixth-man-player">6th Man of the Year:</label>
-        <input type="text" id="sixth-man-player" name="sixth-man-player" placeholder="Enter player name" required />
+        <label for="rookie-player">Rookie of the Year:</label>
+        <input type="text" id="rookie-player" name="rookie-player" placeholder="Enter player name" required />
         <br />
-        <label for="clutch-player">Clutch Player of the Year:</label>
-        <input type="text" id="clutch-player" name="clutch-player" placeholder="Enter player name" required />
+        <label for="sixth-man-player">Sixth Man of the Year:</label>
+        <input type="text" id="sixth-man-player" name="sixth-man-player" placeholder="Enter player name" required />
         <br />
         <button type="submit">Save</button>
       </form>
     `;
-    return playerFormContainer;
+    return playerAwardsFormContainer;
   }
 
   // Append the player awards prediction form to the container
-  playerAwardsContainer.appendChild(createPlayerAwardPredictionForm());
+  playerAwardsContainer.appendChild(createPlayerAwardsPredictionForm());
 });
