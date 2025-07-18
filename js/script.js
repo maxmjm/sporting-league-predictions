@@ -1,11 +1,27 @@
-// Navigate to specified page when the button is clicked
+document.addEventListener("DOMContentLoaded", function () {
+  const usernameForm = document.getElementById("username-form");
+  const usernameInput = document.getElementById("username");
+  const errorMessage = document.getElementById("error-message");
+  const usernameContainer = document.getElementById("username-container");
+  const menuContainer = document.getElementById("menu-container");
+
+  usernameForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const username = usernameInput.value.trim();
+
+    if (username.length > 0) {
+      usernameContainer.style.display = "none";
+      menuContainer.style.display = "block";
+    } else {
+      errorMessage.style.display = "block";
+    }
+  });
+});
+
 function navigateToPage(pageName) {
-  if (pageName === 'nba-regular-season') {
-    window.location.href = 'nba-regular-season.html';
-  }
+  window.location.href = `./${pageName}`;
 }
 
-// Show an alert indicating a page is still in development
-function showInDevelopment() {
-  alert('This page is still in development! Please check back later.');
+function showInDevelopment(pageName) {
+  alert(`Currently in development. Check back later!`);
 }
