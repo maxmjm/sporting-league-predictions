@@ -8,9 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const usernameInputField = document.getElementById(
     "username-validation-field"
   );
-  const usernameErrorMessage = document.getElementById(
-    "username-validation-error-message"
-  );
   const usernameInputContainer = document.getElementById(
     "username-input-container"
   );
@@ -22,13 +19,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const enteredUsername = usernameInputField.value.trim();
 
     if (enteredUsername.length > 0) {
+      localStorage.setItem("username", enteredUsername);
       usernameInputContainer.style.display = "none";
       mainMenu.style.display = "block";
       leagueSelectionMenu.style.display = "block";
     } else {
       alert("Please enter a valid username!");
     }
-
-    localStorage.setItem("username", enteredUsername);
   });
 });

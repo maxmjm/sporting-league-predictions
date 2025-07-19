@@ -1,7 +1,6 @@
-import express from "express";
-import sqlite3 from "sqlite3";
-import path from "path";
-
+const express = require("express");
+const sqlite3 = require("sqlite3");
+const path = require("path");
 const app = express();
 const PORT = 3000;
 
@@ -151,7 +150,7 @@ app.post("/save-western-conference", (req, res) => {
       win_total,
       big_call
     )
-    VALUES (?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?)
   `;
 
   database.run(
@@ -171,15 +170,8 @@ app.post("/save-western-conference", (req, res) => {
   );
 });
 
-// Serve static files from the "html" directory
-app.use(express.static(path.join(__dirname, "html")));
-
-// Start the server and listen on the specified port
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
-
 app.get("/all-nba-regular-season-predictions", (req, res) => {
+  console.log("📥 /all-nba-regular-season-predictions endpoint hit");
   const results = {};
 
   const fetchPlayerAwards = `SELECT * FROM nba_player_awards`;
@@ -209,4 +201,20 @@ app.get("/all-nba-regular-season-predictions", (req, res) => {
       });
     });
   });
+});
+
+// Serve static files from the "html" directory
+app.use(express.static(path.join(__dirname, "html")));
+
+// ✅ Serve static assets
+app.use("/css", express.static(path.join(__dirname, "css")));
+app.use("/js", express.static(path.join(__dirname, "js")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "html", "index.html"));
+});
+
+// Start the server and listen on the specified port
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
 });
