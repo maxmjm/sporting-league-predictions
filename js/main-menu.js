@@ -28,5 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       alert("Please enter a valid username!");
     }
+
+    localStorage.setItem("username", enteredUsername);
   });
 });
