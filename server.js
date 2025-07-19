@@ -1,25 +1,52 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
 const path = require("path");
+
 const app = express();
 const PORT = 3000;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-// Define the path to the SQLite database file
+// Define path to SQLite database file
 const databaseFilePath = path.join(
   __dirname,
   "data",
   "sporting-league-predictions.db"
 );
 
-// Initialise the SQLite database
+// Initialise SQLite database
 const database = new sqlite3.Database(databaseFilePath);
 
-// Create the table for NBA player awards predictions if it doesn't exist
+// Create Eastern Conference Predictions table
 database.run(`
-  CREATE TABLE IF NOT EXISTS nba_player_awards (
+  CREATE TABLE IF NOT EXISTS eastern_conference_predictions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL, -- Username of the predictor
+    team_name TEXT NOT NULL, -- Name of the team
+    seed INTEGER NOT NULL, -- Predicted seed in the conference
+    win_total INTEGER NOT NULL, -- Predicted total wins
+    big_call TEXT, -- Big Call for the team
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of record creation
+  )
+`);
+
+// Create Western Conference Predictions table
+database.run(`
+  CREATE TABLE IF NOT EXISTS western_conference_predictions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT NOT NULL, -- Username of the predictor
+    team_name TEXT NOT NULL, -- Name of the team
+    seed INTEGER NOT NULL, -- Predicted seed in the conference
+    win_total INTEGER NOT NULL, -- Predicted total wins
+    big_call TEXT, -- Big Call for the team
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of record creation
+  )
+`);
+
+// Create NBA Player Awards table
+database.run(`
+  CREATE TABLE IF NOT EXISTS nba_player_awards_predictions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL, -- Username of the predictor
     most_valuable_player TEXT, -- MVP player name
@@ -32,34 +59,72 @@ database.run(`
   )
 `);
 
-// Create the table for Eastern Conference predictions if it doesn't exist
-database.run(`
-  CREATE TABLE IF NOT EXISTS eastern_conference_predictions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL, -- Username of the predictor
-    team_name TEXT NOT NULL, -- Name of the team
-    seed INTEGER NOT NULL, -- Predicted seed in the conference
-    win_total INTEGER NOT NULL, -- Predicted total wins
-    big_call TEXT, -- Bold prediction for the team
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of record creation
-  )
-`);
+// Save Eastern Conference predictions
+app.post("/save-eastern-conference-predictions", (req, res) => {
+  const { username, team_name, seed, win_total, big_call } = req.body;
 
-// Create the table for Western Conference predictions if it doesn't exist
-database.run(`
-  CREATE TABLE IF NOT EXISTS western_conference_predictions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL, -- Username of the predictor
-    team_name TEXT NOT NULL, -- Name of the team
-    seed INTEGER NOT NULL, -- Predicted seed in the conference
-    win_total INTEGER NOT NULL, -- Predicted total wins
-    big_call TEXT, -- Bold prediction for the team
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- Timestamp of record creation
-  )
-`);
+  const query = `
+    INSERT INTO eastern_conference_predictions (
+      username,
+      team_name,
+      seed,
+      win_total,
+      big_call
+    )
+    VALUES (?, ?, ?, ?, ?)
+  `;
 
-// Endpoint to save NBA player awards predictions
-app.post("/save-player-awards", (req, res) => {
+  database.run(
+    query,
+    [username, team_name, seed, win_total, big_call],
+    function (err) {
+      if (err) {
+        return res
+          .status(500)
+          .send("Error saving Eastern Conference predictions!");
+      }
+      res.status(200).send({
+        message: "Eastern Conference predictions saved successfully!",
+        id: this.lastID, // ID of the newly inserted record
+      });
+    }
+  );
+});
+
+// Save Western Conference predictions
+app.post("/save-western-conference-predictions", (req, res) => {
+  const { username, team_name, seed, win_total, big_call } = req.body;
+
+  const query = `
+    INSERT INTO western_conference_predictions (
+      username,
+      team_name,
+      seed,
+      win_total,
+      big_call
+    )
+    VALUES (?, ?, ?, ?, ?)
+  `;
+
+  database.run(
+    query,
+    [username, team_name, seed, win_total, big_call],
+    function (err) {
+      if (err) {
+        return res
+          .status(500)
+          .send("Error saving Western Conference predictions!");
+      }
+      res.status(200).send({
+        message: "Western Conference predictions saved successfully!",
+        id: this.lastID, // ID of the newly inserted record
+      });
+    }
+  );
+});
+
+// Save Player Awards predictions
+app.post("/save-player-awards-predictions", (req, res) => {
   const {
     username,
     most_valuable_player,
@@ -70,8 +135,8 @@ app.post("/save-player-awards", (req, res) => {
     clutch_player_of_the_year,
   } = req.body;
 
-  const insertPlayerAwardsQuery = `
-    INSERT INTO nba_player_awards (
+  const query = `
+    INSERT INTO nba_player_awards_predictions (
       username,
       most_valuable_player,
       rookie_of_the_year,
@@ -84,7 +149,7 @@ app.post("/save-player-awards", (req, res) => {
   `;
 
   database.run(
-    insertPlayerAwardsQuery,
+    query,
     [
       username,
       most_valuable_player,
@@ -106,113 +171,51 @@ app.post("/save-player-awards", (req, res) => {
   );
 });
 
-// Endpoint to save Eastern Conference predictions
-app.post("/save-eastern-conference", (req, res) => {
-  const { username, team_name, seed, win_total, big_call } = req.body;
-
-  const insertEasternConferenceQuery = `
-    INSERT INTO eastern_conference_predictions (
-      username,
-      team_name,
-      seed,
-      win_total,
-      big_call
-    )
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
-  database.run(
-    insertEasternConferenceQuery,
-    [username, team_name, seed, win_total, big_call],
-    function (err) {
-      if (err) {
-        return res
-          .status(500)
-          .send("Error saving Eastern Conference predictions!");
-      }
-      res.status(200).send({
-        message: "Eastern Conference predictions saved successfully!",
-        id: this.lastID, // ID of the newly inserted record
-      });
-    }
-  );
-});
-
-// Endpoint to save Western Conference predictions
-app.post("/save-western-conference", (req, res) => {
-  const { username, team_name, seed, win_total, big_call } = req.body;
-
-  const insertWesternConferenceQuery = `
-    INSERT INTO western_conference_predictions (
-      username,
-      team_name,
-      seed,
-      win_total,
-      big_call
-    )
-    VALUES (?, ?, ?, ?, ?)
-  `;
-
-  database.run(
-    insertWesternConferenceQuery,
-    [username, team_name, seed, win_total, big_call],
-    function (err) {
-      if (err) {
-        return res
-          .status(500)
-          .send("Error saving Western Conference predictions!");
-      }
-      res.status(200).send({
-        message: "Western Conference predictions saved successfully!",
-        id: this.lastID, // ID of the newly inserted record
-      });
-    }
-  );
-});
-
+// Endpoint to fetch all NBA regular season predictions
 app.get("/all-nba-regular-season-predictions", (req, res) => {
-  console.log("📥 /all-nba-regular-season-predictions endpoint hit");
-  const results = {};
+  const allPredictions = {};
+  const queries = {
+    easternConference: `SELECT * FROM eastern_conference_predictions`,
+    westernConference: `SELECT * FROM western_conference_predictions`,
+    playerAwards: `SELECT * FROM nba_player_awards_predictions`,
+  };
 
-  const fetchPlayerAwards = `SELECT * FROM nba_player_awards`;
-  const fetchEasternConference = `SELECT * FROM eastern_conference_predictions`;
-  const fetchWesternConference = `SELECT * FROM western_conference_predictions`;
-
-  database.all(fetchPlayerAwards, [], (err, playerAwardsRows) => {
+  database.all(queries.playerAwards, [], (err, playerAwardsRows) => {
     if (err)
-      return res.status(500).send("Error fetching Player Awards predictions!");
-    results.playerAwards = playerAwardsRows;
+      return res
+        .status(500)
+        .send("❌ Error fetching Player Awards predictions!");
+    allPredictions.playerAwards = playerAwardsRows;
 
-    database.all(fetchEasternConference, [], (err, easternConferenceRows) => {
+    database.all(queries.easternConference, [], (err, eastRows) => {
       if (err)
         return res
           .status(500)
-          .send("Error fetching Eastern Conference predictions!");
-      results.easternConference = easternConferenceRows;
+          .send("❌ Error fetching Eastern Conference predictions!");
+      allPredictions.easternConference = eastRows;
 
-      database.all(fetchWesternConference, [], (err, westernConferenceRows) => {
+      database.all(queries.westernConference, [], (err, westRows) => {
         if (err)
           return res
             .status(500)
-            .send("Error fetching Western Conference predictions!");
-        results.westernConference = westernConferenceRows;
+            .send("❌ Error fetching Western Conference predictions!");
+        allPredictions.westernConference = westRows;
 
-        res.status(200).json(results);
+        res.status(200).json(allPredictions);
       });
     });
   });
 });
 
-// Serve static files from the "html" directory
-app.use(express.static(path.join(__dirname, "html")));
-
-// ✅ Serve static assets
-app.use("/css", express.static(path.join(__dirname, "css")));
-app.use("/js", express.static(path.join(__dirname, "js")));
-
+// Serve main HTML page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "html", "index.html"));
 });
+
+// Serve static assets
+app.use(express.static(path.join(__dirname, "html")));
+app.use("/css", express.static(path.join(__dirname, "css")));
+app.use("/js", express.static(path.join(__dirname, "js")));
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => {

@@ -1,8 +1,10 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
+  // Redirect if username is not set
   const username = localStorage.getItem("username");
   if (!username) {
-    alert("Please set your username before making predictions.");
+    alert("Please set your username before continuing!");
     window.location.href = "index.html";
+    return;
   }
 
   // List of Eastern Conference teams
@@ -43,22 +45,23 @@ document.addEventListener("DOMContentLoaded", function () {
     "Utah Jazz",
   ];
 
-  // DOM containers for team forms and player awards
+  // DOM container references
   const easternConferenceTeamsContainer = document.getElementById(
-    "eastern-conference-teams"
+    "eastern-conference-teams-container"
   );
   const westernConferenceTeamsContainer = document.getElementById(
-    "western-conference-teams"
+    "western-conference-teams-container"
   );
-  const playerAwardsContainer = document.getElementById("player-awards");
+  const playerAwardsFormContainer = document.getElementById(
+    "player-awards-container"
+  );
 
   // Function to create prediction forms for teams
-  function createTeamPredictionForm(teamName, conference) {
-    const username = localStorage.getItem("username");
+  function createTeamPredictionsForm(teamName, conference) {
     const teamKey = teamName.replace(/\s+/g, "-").toLowerCase();
+    const predictionForm = document.createElement("form");
 
-    const form = document.createElement("form");
-    form.innerHTML = `
+    predictionForm.innerHTML = `
     <h6>${teamName}</h6>
     <label for="seed-${teamKey}">Seed:</label>
     <input type="number" id="seed-${teamKey}" name="seed" min="1" max="15" required />
@@ -66,25 +69,28 @@ document.addEventListener("DOMContentLoaded", function () {
     <label for="win-total-${teamKey}">Win Total:</label>
     <input type="number" id="win-total-${teamKey}" name="win-total" min="0" max="82" required />
     <br />
-    <label for="bold-prediction-${teamKey}">Bold Prediction:</label>
-    <textarea id="bold-prediction-${teamKey}" name="bold-prediction" rows="3"></textarea>
+    <label for="big-call-${teamKey}">Big Call:</label>
+    <textarea id="big-call-${teamKey}" name="big-call" rows="3"></textarea>
     <br />
     <button type="submit">Save</button>
   `;
 
-    form.addEventListener("submit", function (e) {
+    // Handle form submission
+    predictionForm.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const seed = form.querySelector("input[name='seed']").value;
-      const win_total = form.querySelector("input[name='win-total']").value;
-      const big_call = form.querySelector(
-        "textarea[name='bold-prediction']"
+      const seed = predictionForm.querySelector("input[name='seed']").value;
+      const win_total = predictionForm.querySelector(
+        "input[name='win-total']"
+      ).value;
+      const big_call = predictionForm.querySelector(
+        "textarea[name='big-call']"
       ).value;
 
       const endpoint =
         conference === "east"
-          ? "/save-eastern-conference"
-          : "/save-western-conference";
+          ? "/save-eastern-conference-predictions"
+          : "/save-western-conference-predictions";
 
       fetch(endpoint, {
         method: "POST",
@@ -99,98 +105,100 @@ document.addEventListener("DOMContentLoaded", function () {
       })
         .then((res) => res.json())
         .then(() => alert(`Saved ${conference} prediction for ${teamName}!`))
-        .catch(() => alert(`Failed to save prediction for ${teamName}`));
+        .catch(() => alert(`Failed to save prediction for ${teamName}!`));
     });
 
-    const wrapper = document.createElement("div");
-    wrapper.classList.add("team-prediction-form");
-    wrapper.appendChild(form);
-    return wrapper;
+    const formWrapper = document.createElement("div");
+    formWrapper.classList.add("team-predictions-form");
+    formWrapper.appendChild(predictionForm);
+    return formWrapper;
   }
 
-  // Render prediction forms for Eastern Conference teams
+  // Render prediction forms for all teams
   easternConferenceTeams.forEach((team) => {
     easternConferenceTeamsContainer.appendChild(
-      createTeamPredictionForm(team, "east")
+      createTeamPredictionsForm(team, "east")
     );
   });
-
-  // Render prediction forms for Western Conference teams
   westernConferenceTeams.forEach((team) => {
     westernConferenceTeamsContainer.appendChild(
-      createTeamPredictionForm(team, "west")
+      createTeamPredictionsForm(team, "west")
     );
   });
 
   // Function to create player awards prediction form
-  function createPlayerAwardsPredictionForm() {
-    const username = localStorage.getItem("username");
+  function createPlayerAwardsPredictionsForm() {
+    const awardsForm = document.createElement("form");
 
-    const form = document.createElement("form");
-    form.innerHTML = `
-    <label for="clutch-player">Clutch Player of the Year:</label>
-    <input type="text" id="clutch-player" name="clutch-player" required /><br />
-    <label for="defensive-player">Defensive Player of the Year:</label>
-    <input type="text" id="defensive-player" name="defensive-player" required /><br />
+    awardsForm.innerHTML = `
+    <label for="clutch-player-of-the-year">Clutch Player of the Year:</label>
+    <input type="text" id="clutch-player-of-the-year" name="clutch-player-of-the-year" required /><br />
+    <label for="defensive-player-of-the-year">Defensive Player of the Year:</label>
+    <input type="text" id="defensive-player-of-the-year" name="defensive-player-of-the-year" required /><br />
     <label for="most-valuable-player">Most Valuable Player:</label>
     <input type="text" id="most-valuable-player" name="most-valuable-player" required /><br />
     <label for="most-improved-player">Most Improved Player:</label>
     <input type="text" id="most-improved-player" name="most-improved-player" required /><br />
-    <label for="rookie-player">Rookie of the Year:</label>
-    <input type="text" id="rookie-player" name="rookie-player" required /><br />
-    <label for="sixth-man-player">Sixth Man of the Year:</label>
-    <input type="text" id="sixth-man-player" name="sixth-man-player" required /><br />
+    <label for="rookie-of-the-year">Rookie of the Year:</label>
+    <input type="text" id="rookie-of-the-year" name="rookie-of-the-year" required /><br />
+    <label for="sixth-man-of-the-year">Sixth Man of the Year:</label>
+    <input type="text" id="sixth-man-of-the-year" name="sixth-man-of-the-year" required /><br />
     <button type="submit">Save</button>
   `;
 
-    form.addEventListener("submit", function (e) {
+    awardsForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      fetch("/save-player-awards", {
+
+      fetch("/save-player-awards-predictions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           username,
-          clutch_player_of_the_year: form["clutch-player"].value,
-          defensive_player_of_the_year: form["defensive-player"].value,
-          most_valuable_player: form["most-valuable-player"].value,
-          most_improved_player: form["most-improved-player"].value,
-          rookie_of_the_year: form["rookie-player"].value,
-          sixth_man_of_the_year: form["sixth-man-player"].value,
+          clutch_player_of_the_year:
+            awardsForm["clutch-player-of-the-year"].value,
+          defensive_player_of_the_year:
+            awardsForm["defensive-player-of-the-year"].value,
+          most_valuable_player: awardsForm["most-valuable-player"].value,
+          most_improved_player: awardsForm["most-improved-player"].value,
+          rookie_of_the_year: awardsForm["rookie-of-the-year"].value,
+          sixth_man_of_the_year: awardsForm["sixth-man-of-the-year"].value,
         }),
       })
         .then((res) => res.json())
         .then(() => alert("Player Awards saved!"))
-        .catch(() => alert("Failed to save Player Awards"));
+        .catch(() => alert("Failed to save Player Awards!"));
     });
 
-    const container = document.createElement("div");
-    container.classList.add("player-awards-prediction-form");
-    container.appendChild(form);
-    return container;
+    const awardsFormWrapper = document.createElement("div");
+    awardsFormWrapper.classList.add("player-awards-predictions-form");
+    awardsFormWrapper.appendChild(awardsForm);
+    return awardsFormWrapper;
   }
 
-  // Append the player awards prediction form to the container
-  playerAwardsContainer.appendChild(createPlayerAwardsPredictionForm());
+  // Add the awards form to the DOM
+  playerAwardsFormContainer.appendChild(createPlayerAwardsPredictionsForm());
 
+  // Render predictions in table format for all users
   function renderPredictionsTable(userPredictions) {
-    const tableContainer = document.getElementById(
-      "all-nba-regular-season-predictions-table-container"
+    const predictionsDisplayTableContainer = document.getElementById(
+      "display-user-predictions-container"
     );
-    tableContainer.innerHTML = ""; // Clear any existing content
+    predictionsDisplayTableContainer.innerHTML = ""; // Clear any existing content
 
     for (const username in userPredictions) {
       const userPredictionData = userPredictions[username];
-      const userSection = document.createElement("section");
-      userSection.classList.add("user-prediction-section");
+      const userPredictionSection = document.createElement("section");
+      userPredictionSection.classList.add("display-user-predictions-section");
 
-      const title = document.createElement("h3");
-      title.textContent = `Predictions by ${username}`;
-      userSection.appendChild(title);
+      // Username title
+      const sectionTitle = document.createElement("h3");
+      sectionTitle.textContent = `Predictions by ${username}`;
+      userPredictionSection.appendChild(sectionTitle);
 
       // Eastern Conference Table
-      const easternConferenceTable = document.createElement("table");
-      easternConferenceTable.innerHTML = `<caption>Eastern Conference</caption>
-      <thead><tr><th>Team</th><th>Seed</th><th>Wins</th><th>Bold Prediction</th></tr></thead>
+      const easternConferencePredictionsTable = document.createElement("table");
+      easternConferencePredictionsTable.innerHTML = `<caption>Eastern Conference</caption>
+      <thead><tr><th>Team</th><th>Seed</th><th>Wins</th><th>Big Call</th></tr></thead>
       <tbody>
         ${userPredictionData.east
           .map(
@@ -205,12 +213,12 @@ document.addEventListener("DOMContentLoaded", function () {
           )
           .join("")}
       </tbody>`;
-      userSection.appendChild(easternConferenceTable);
+      userPredictionSection.appendChild(easternConferencePredictionsTable);
 
       // Western Conference Table
-      const westernConferenceTable = document.createElement("table");
-      westernConferenceTable.innerHTML = `<caption>Western Conference</caption>
-      <thead><tr><th>Team</th><th>Seed</th><th>Wins</th><th>Bold Prediction</th></tr></thead>
+      const westernConferencePredictionsTable = document.createElement("table");
+      westernConferencePredictionsTable.innerHTML = `<caption>Western Conference</caption>
+      <thead><tr><th>Team</th><th>Seed</th><th>Wins</th><th>Big Call</th></tr></thead>
       <tbody>
         ${userPredictionData.west
           .map(
@@ -225,12 +233,12 @@ document.addEventListener("DOMContentLoaded", function () {
           )
           .join("")}
       </tbody>`;
-      userSection.appendChild(westernConferenceTable);
+      userPredictionSection.appendChild(westernConferencePredictionsTable);
 
       // Player Awards Table
       const awards = userPredictionData.playerAwards;
-      const awardsTable = document.createElement("table");
-      awardsTable.innerHTML = `
+      const awardsPredictionsTable = document.createElement("table");
+      awardsPredictionsTable.innerHTML = `
       <caption>Player Awards</caption>
       <thead><tr><th>Award</th><th>Prediction</th></tr></thead>
       <tbody>
@@ -241,46 +249,53 @@ document.addEventListener("DOMContentLoaded", function () {
         <tr><td>Sixth Man</td><td>${awards.sixth_man_of_the_year}</td></tr>
         <tr><td>Clutch</td><td>${awards.clutch_player_of_the_year}</td></tr>
       </tbody>`;
-      userSection.appendChild(awardsTable);
+      userPredictionSection.appendChild(awardsPredictionsTable);
 
-      tableContainer.appendChild(userSection);
+      predictionsDisplayTableContainer.appendChild(userPredictionSection);
     }
   }
 
+  // Fetch and render all user predictions from the server
   fetch("/all-nba-regular-season-predictions")
     .then((res) => {
       if (!res.ok) throw new Error(`Server responded with ${res.status}`);
       return res.json();
     })
     .then((data) => {
-      console.log("Predictions loaded:", data);
-      // render logic here...
-    })
-    .catch((err) => {
-      console.error("Failed to load predictions:", err);
-      alert("Could not load predictions from the server.");
-    })
-    .then((data) => {
       const users = {};
 
+      // Organise data into user based structure
       data.playerAwards.forEach((row) => {
-        if (!users[row.username])
-          users[row.username] = { playerAwards: {}, east: [], west: [] };
+        users[row.username] = users[row.username] || {
+          playerAwards: {},
+          east: [],
+          west: [],
+        };
         users[row.username].playerAwards = row;
       });
 
       data.easternConference.forEach((row) => {
-        if (!users[row.username])
-          users[row.username] = { playerAwards: {}, east: [], west: [] };
+        users[row.username] = users[row.username] || {
+          playerAwards: {},
+          east: [],
+          west: [],
+        };
         users[row.username].east.push(row);
       });
 
       data.westernConference.forEach((row) => {
-        if (!users[row.username])
-          users[row.username] = { playerAwards: {}, east: [], west: [] };
+        users[row.username] = users[row.username] || {
+          playerAwards: {},
+          east: [],
+          west: [],
+        };
         users[row.username].west.push(row);
       });
 
       renderPredictionsTable(users);
+    })
+    .catch((err) => {
+      console.error("Failed to fetch user predictions:", err);
+      alert("Failed to load user predictions from the server!");
     });
 });
