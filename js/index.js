@@ -16,6 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     "league-selection-container"
   );
 
+  // Check if a username is already stored in localStorage
+  const storedUsername = localStorage.getItem("username");
+  if (storedUsername) {
+    usernameInputContainer.style.display = "none"; // Hide input if username exists
+    leagueSelectionMenu.style.display = "flex"; // Show league selection menu
+  }
+
   // Handle form submission for username validation
   usernameValidationForm.addEventListener("submit", (event) => {
     event.preventDefault(); // Prevent page reload on form submission
@@ -29,8 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Transition to main menu
       usernameInputContainer.style.display = "none";
-      mainMenu.style.display = "block";
-      leagueSelectionMenu.style.display = "block";
+      leagueSelectionMenu.style.display = "flex";
     } else {
       alert("Please enter a valid username!");
     }

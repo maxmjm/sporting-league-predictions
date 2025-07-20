@@ -1,4 +1,4 @@
-/* Username validation */
+/* Username Validation Styles */
 #username-input-container {
   height: 100vh;
   display: flex;
@@ -9,6 +9,7 @@
 #username-validation-form {
   background: white;
   padding: 2rem;
+  margin: 1rem;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -28,7 +29,7 @@
 }
 #username-validation-form button {
   padding: 0.6rem;
-  background-color: #873afb;
+  background-color: #6f2bd9;
   color: white;
   border: none;
   font-size: 1rem;
@@ -40,22 +41,23 @@
   background-color: #fc8734;
 }
 
-/* Main menu */
+/* League Selection Styles */
 #league-selection-container {
-  height: 100vh;
-  background-color: #f7f9fc;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-color: #f7f9fc;
 }
 #league-selection-form {
-  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 2rem 2.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background-color: white;
   gap: 2rem;
   width: 100%;
   max-width: 700px;
@@ -63,9 +65,9 @@
 #league-selection-form h2 {
   font-size: 1.8rem;
   color: #333;
+  margin: 1rem;
   margin-bottom: 1rem;
 }
-/* Grid layout for buttons */
 .league-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -75,7 +77,7 @@
 .league-buttons button {
   padding: 1rem;
   font-size: 1rem;
-  background-color: #873afb;
+  background-color: #6f2bd9;
   color: white;
   border: none;
   border-radius: 8px;
