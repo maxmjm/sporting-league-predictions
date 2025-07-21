@@ -1,11 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Redirect if username is not set
+  // Get the username from localStorage
   const username = localStorage.getItem("username");
-  if (!username) {
-    alert("Please set your username before continuing!");
-    window.location.href = "index.html";
-    return;
-  }
 
   // List of Eastern Conference teams
   const easternConferenceTeams = [
@@ -242,12 +237,12 @@ document.addEventListener("DOMContentLoaded", () => {
       <caption>Player Awards</caption>
       <thead><tr><th>Award</th><th>Prediction</th></tr></thead>
       <tbody>
-        <tr><td>MVP</td><td>${awards.most_valuable_player}</td></tr>
-        <tr><td>Rookie</td><td>${awards.rookie_of_the_year}</td></tr>
-        <tr><td>Defensive</td><td>${awards.defensive_player_of_the_year}</td></tr>
-        <tr><td>Most Improved</td><td>${awards.most_improved_player}</td></tr>
-        <tr><td>Sixth Man</td><td>${awards.sixth_man_of_the_year}</td></tr>
-        <tr><td>Clutch</td><td>${awards.clutch_player_of_the_year}</td></tr>
+        <tr><td>Most Valuable Player</td><td>${awards.most_valuable_player}</td></tr>
+        <tr><td>Rookie of the Year</td><td>${awards.rookie_of_the_year}</td></tr>
+        <tr><td>Defensive Player of the Year</td><td>${awards.defensive_player_of_the_year}</td></tr>
+        <tr><td>Most Improved Player</td><td>${awards.most_improved_player}</td></tr>
+        <tr><td>Sixth Man of the Year</td><td>${awards.sixth_man_of_the_year}</td></tr>
+        <tr><td>Clutch Player of the Year</td><td>${awards.clutch_player_of_the_year}</td></tr>
       </tbody>`;
       userPredictionSection.appendChild(awardsPredictionsTable);
 

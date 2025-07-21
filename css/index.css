@@ -1,4 +1,4 @@
-/* Username Validation Styles */
+/* Username input styles */
 #username-input-container {
   height: 100vh;
   display: flex;
@@ -41,7 +41,7 @@
   background-color: #fc8734;
 }
 
-/* League Selection Styles */
+/* Sporting League selection menu styles */
 #league-selection-container {
   display: flex;
   justify-content: center;
