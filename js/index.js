@@ -1,44 +1,45 @@
+// Wait until the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-  // Reveal body once DOM is fully loaded (originally hidden via CSS)
+  // Ensure the body is visible once DOM is ready (if hidden by CSS)
   document.body.style.display = "block";
 
-  // Get references to DOM elements
-  const usernameValidationForm = document.getElementById(
-    "username-validation-form"
-  );
-  const usernameInputField = document.getElementById(
-    "username-validation-field"
-  );
-  const usernameInputContainer = document.getElementById(
-    "username-input-container"
-  );
-  const sportingLeagueSelectionMenuContainer = document.getElementById(
-    "sporting-league-selection-menu-container"
-  );
+  // Get DOM elements
+  const form = document.getElementById("username-form");
+  const input = document.getElementById("username-validation-field");
+  const inputContainer = document.getElementById("username-input-container");
+  const leagueMenu = document.getElementById("league-menu-container");
 
-  // Check if a username is already stored in localStorage
-  const storedUsername = localStorage.getItem("username");
-  if (storedUsername) {
-    usernameInputContainer.style.display = "none"; // Hide input if username exists
-    sportingLeagueSelectionMenuContainer.style.display = "flex"; // Show sporting league selection menu
+  // Check for missing DOM elements
+  if (!form || !input || !inputContainer || !leagueMenu) {
+    console.error("Required DOM elements are missing. Please check the HTML.");
+    return;
   }
 
-  // Handle form submission for username validation
-  usernameValidationForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Prevent page reload on form submission
+  // Check if username exists in localStorage
+  const existingUsername = localStorage.getItem("username");
+  if (existingUsername) {
+    // Skip username entry and show the league menu
+    inputContainer.style.display = "none";
+    leagueMenu.style.display = "flex";
+  }
 
-    const username = usernameInputField.value.trim();
+  // Handle username form submission
+  form.addEventListener("submit", (event) => {
+    event.preventDefault(); // Prevent full page reload
+
+    const username = input.value.trim();
 
     // Validate entered username
-    if (username.length > 0) {
-      // Store username in localStorage for persistence
-      localStorage.setItem("username", username);
-
-      // Transition to sporting league selection menu
-      usernameInputContainer.style.display = "none";
-      sportingLeagueSelectionMenuContainer.style.display = "flex";
-    } else {
+    if (username.length === 0) {
       alert("Please enter a valid username!");
+      return;
     }
+
+    // Store username in localStorage for persistence
+    localStorage.setItem("username", username);
+
+    // Hide the input and reveal the league menu
+    inputContainer.style.display = "none";
+    leagueMenu.style.display = "flex";
   });
 });

@@ -1,4 +1,6 @@
-/* General styles for NBA Regular Season Predictions page */
+/*------------------------------
+   Global Base Styles
+--------------------------------*/
 body {
   margin: 0;
   padding: 0;
@@ -7,7 +9,9 @@ body {
   background-color: #f7f9fc;
 }
 
-/* Header styles */
+/*------------------------------
+   Header
+--------------------------------*/
 header {
   padding: 1.5rem 1rem;
   text-align: center;
@@ -20,7 +24,9 @@ header h1 {
   font-size: 2rem;
 }
 
-/* Section header styles */
+/*------------------------------
+   Section Layout
+--------------------------------*/
 main section {
   max-width: 1000px;
   margin: 2rem auto;
@@ -37,117 +43,104 @@ main section h2 {
   border-bottom: 2px solid #eee;
 }
 
-/* Team predictions form styles */
+/*------------------------------
+   Team Predictions Form
+--------------------------------*/
+.team-predictions-form {
+  padding: 1rem;
+  margin-bottom: 2rem;
+  border-radius: 10px;
+  background-color: #f2f5fa;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
 .team-predictions-form h6 {
+  margin: 0.5rem 0 1rem 0;
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
   color: #222;
 }
-.team-predictions-form label {
+
+/* Shared styling for inputs */
+.team-predictions-form label,
+.player-awards-predictions-form label {
   display: block;
   margin-top: 1rem;
   margin-bottom: 0.6rem;
   font-weight: 500;
 }
 .team-predictions-form input,
-.team-predictions-form textarea {
+.team-predictions-form textarea,
+.player-awards-predictions-form input {
   width: 100%;
   margin-top: 0.3rem;
   padding: 0.5rem;
   font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+  box-sizing: border-box;
 }
-.team-predictions-form button {
-  cursor: pointer;
-  margin-top: 1.5rem;
+
+/*------------------------------
+   Buttons (Shared)
+--------------------------------*/
+.team-predictions-form button,
+.player-awards-predictions-form button {
+  display: block;
+  margin: 1.5rem 0 0 auto;
   padding: 0.6rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
   border: none;
   border-radius: 6px;
-  font-weight: 500;
   background-color: #6f2bd9;
   color: white;
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
-.team-predictions-form button,
-.player-awards-predictions-form button {
-  display: block;
-  margin: 1.5rem 0 0 auto; /* top margin + right-aligned */
-}
-.team-predictions-form button:hover {
+.team-predictions-form button:hover,
+.player-awards-predictions-form button:hover {
   background-color: #fc8734;
 }
-.team-predictions-form button:active {
+.team-predictions-form button:active,
+.player-awards-predictions-form button:active {
   transform: scale(0.97);
 }
+.team-predictions-form button:focus,
+.player-awards-predictions-form button:focus {
+  outline: 2px solid #fc8734;
+  outline-offset: 2px;
+}
 
-/* Player awards form styling */
+/*------------------------------
+   Player Awards Form
+--------------------------------*/
 .player-awards-predictions-form {
   padding: 1rem;
   border-radius: 10px;
   background-color: #f2f5fa;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
-.player-awards-predictions-form label {
-  display: block;
-  margin-top: 0.8rem;
-  font-weight: 500;
-}
-.player-awards-predictions-form input {
-  width: 100%;
-  margin-top: 0.3rem;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-.player-awards-predictions-form button {
-  cursor: pointer;
-  margin-top: 1.2rem;
-  padding: 0.6rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background-color: #6f2bd9;
-  color: white;
-  transition: background-color 0.3s ease;
-}
-.player-awards-predictions-form button:hover {
-  background-color: #fc8734;
-}
 
-/* User predictions display */
-.display-user-predictions-section {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-}
-.display-user-predictions-section h3 {
-  margin-bottom: 1rem;
-  color: #333;
-}
+/*------------------------------
+   Responsive Styles
+--------------------------------*/
+@media (max-width: 600px) {
+  main section {
+    padding: 1rem;
+  }
 
-/* Tables */
-.display-user-predictions-section table {
-  width: 100%;
-  margin-bottom: 2rem;
-  border-collapse: collapse;
-}
-.display-user-predictions-section caption {
-  margin-bottom: 0.5rem;
-  caption-side: top;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
-.display-user-predictions-section th,
-.display-user-predictions-section td {
-  text-align: left;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
-}
-.display-user-predictions-section th {
-  background-color: #f0f0f0;
-}
-.display-user-predictions-section tr:nth-child(even) {
-  background-color: #fafafa;
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .team-predictions-form input,
+  .player-awards-predictions-form input,
+  .team-predictions-form textarea {
+    font-size: 0.95rem;
+  }
+
+  .team-predictions-form button,
+  .player-awards-predictions-form button {
+    width: 100%;
+  }
 }

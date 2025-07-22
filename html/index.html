@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta tags for character encoding and responsive design -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Sporting League Predictions</title>
-    <!-- Shared styles and scripts for consistent design -->
+
+    <!-- Shared styles and scripts -->
     <link rel="stylesheet" href="/css/shared-styles.css" />
     <script src="/js/shared-scripts.js" defer></script>
-    <!-- Specific styles and scripts for the index -->
+
+    <!-- Page-specific styles and scripts -->
     <link rel="stylesheet" href="/css/index.css" />
     <script src="/js/index.js" defer></script>
   </head>
+
   <body>
-    <!-- Section: username input -->
+    <!-- Section for user to input their username -->
     <div id="username-input-container">
-      <form id="username-validation-form">
+      <form id="username-form">
         <label for="username-validation-field">Enter your username:</label>
         <input
           type="text"
@@ -25,11 +30,12 @@
         <button type="submit">Submit</button>
       </form>
     </div>
-    <!-- Section: menu to select sporting league (hidden until username is entered) -->
-    <div id="sporting-league-selection-menu-container" style="display: none">
-      <form id="sporting-league-selection-menu-form">
+
+    <!-- League selection menu (shown once username is submitted) -->
+    <div id="league-menu-container" class="hidden">
+      <form id="league-menu-form">
         <h2>Sporting Leagues</h2>
-        <div class="sporting-league-selection-menu-buttons">
+        <div class="league-menu-buttons">
           <button type="button" onclick="showInDevelopmentAlert()">
             AFL Post Season
           </button>
@@ -51,10 +57,11 @@
           >
             NBA Regular Season
           </button>
-          <button type="button" onclick="showInDevelopment()">World Cup</button>
+          <button type="button" onclick="showInDevelopmentAlert()">
+            World Cup
+          </button>
         </div>
       </form>
-      <body>
     </div>
   </body>
 </html>

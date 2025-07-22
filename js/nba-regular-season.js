@@ -1,7 +1,9 @@
+// Wait until the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
+  // Retrieve username from localStorage (set on previous page)
   const username = localStorage.getItem("username");
 
-  const easternConferenceTeams = [
+  const eastTeams = [
     "Atlanta Hawks",
     "Boston Celtics",
     "Brooklyn Nets",
@@ -19,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Washington Wizards",
   ];
 
-  const westernConferenceTeams = [
+  const westTeams = [
     "Dallas Mavericks",
     "Denver Nuggets",
     "Golden State Warriors",
@@ -37,52 +39,65 @@ document.addEventListener("DOMContentLoaded", () => {
     "Utah Jazz",
   ];
 
-  const easternConferenceTeamsContainer = document.getElementById(
+  // Get DOM elements
+  const eastContainer = document.getElementById(
     "eastern-conference-teams-container"
   );
-  const westernConferenceTeamsContainer = document.getElementById(
+  const westContainer = document.getElementById(
     "western-conference-teams-container"
   );
   const playerAwardsContainer = document.getElementById(
     "player-awards-container"
   );
-  const saveAllPredictionsButton = document.getElementById(
+  const savePredictionsButton = document.getElementById(
     "save-all-predictions-button"
   );
 
-  function createTeamPredictionsForm(teamName) {
-    const teamKey = teamName.replace(/\s+/g, "-").toLowerCase();
-    const teamPredictionsForm = document.createElement("form");
-    teamPredictionsForm.innerHTML = `
-      <h6>${teamName}</h6>
-      <label for="seed-${teamKey}">Seed:</label>
-      <input type="number" id="seed-${teamKey}" name="seed" min="1" max="15" required />
-      <label for="win-total-${teamKey}">Win Total:</label>
-      <input type="number" id="win-total-${teamKey}" name="win-total" min="0" max="82" required />
-      <label for="big-call-${teamKey}">Big Call:</label>
-      <textarea id="big-call-${teamKey}" name="big-call" rows="3"></textarea>
+  /**
+   * Create a form block for a team's predictions
+   * @param {string} team - the team name
+   * @returns {HTMLElement} - the team prediction form wrapper
+   */
+  function renderTeamPredictionsForm(team) {
+    // Convert team name to key (e.g., "Boston Celtics" -> "boston-celtics")
+    const key = team.replace(/\s+/g, "-").toLowerCase();
+    const form = document.createElement("form");
+
+    // Form HTML components
+    form.innerHTML = `
+      <h6>${team}</h6>
+      <label for="seed-${key}">Seed:</label>
+      <input type="number" id="seed-${key}" name="seed" min="1" max="15" required />
+      <label for="win-total-${key}">Win Total:</label>
+      <input type="number" id="win-total-${key}" name="win-total" min="0" max="82" required />
+      <label for="big-call-${key}">Big Call:</label>
+      <textarea id="big-call-${key}" name="big-call" rows="3"></textarea>
     `;
-    const teamPredictionsFormWrapper = document.createElement("div");
-    teamPredictionsFormWrapper.classList.add("team-predictions-form");
-    teamPredictionsFormWrapper.appendChild(teamPredictionsForm);
-    return teamPredictionsFormWrapper;
+
+    // Wrap each team's form in a container for styling
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("team-predictions-form");
+    wrapper.appendChild(form);
+
+    return wrapper;
   }
 
-  easternConferenceTeams.forEach((teamName) => {
-    easternConferenceTeamsContainer.appendChild(
-      createTeamPredictionsForm(teamName)
-    );
+  // Render Easter and Western Conference forms
+  eastTeams.forEach((team) => {
+    eastContainer.appendChild(renderTeamPredictionsForm(team));
+  });
+  westTeams.forEach((team) => {
+    westContainer.appendChild(renderTeamPredictionsForm(team));
   });
 
-  westernConferenceTeams.forEach((teamName) => {
-    westernConferenceTeamsContainer.appendChild(
-      createTeamPredictionsForm(teamName)
-    );
-  });
-
+  /**
+   * Create a form block for player awards predictions
+   */
   function createPlayerAwardsPredictionsForm() {
-    const playerAwardsForm = document.createElement("form");
-    playerAwardsForm.innerHTML = `
+    const form = document.createElement("form");
+
+    // Form HTML components
+    form.innerHTML = `
       <label for="clutch-player-of-the-year">Clutch Player of the Year:</label>
       <input type="text" id="clutch-player-of-the-year" name="clutch-player-of-the-year" required />
       <label for="defensive-player-of-the-year">Defensive Player of the Year:</label>
@@ -96,54 +111,52 @@ document.addEventListener("DOMContentLoaded", () => {
       <label for="sixth-man-of-the-year">Sixth Man of the Year:</label>
       <input type="text" id="sixth-man-of-the-year" name="sixth-man-of-the-year" required />
     `;
-    const playerAwardsFormWrapper = document.createElement("div");
-    playerAwardsFormWrapper.classList.add("player-awards-predictions-form");
-    playerAwardsFormWrapper.appendChild(playerAwardsForm);
-    return playerAwardsFormWrapper;
+
+    // Wrap the awards form form in a container for styling
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("player-awards-predictions-form");
+    wrapper.appendChild(form);
+
+    return wrapper;
   }
 
+  // Render player awards form
   playerAwardsContainer.appendChild(createPlayerAwardsPredictionsForm());
 
-  saveAllPredictionsButton.addEventListener("click", () => {
-    const easternConferenceTeamsPredictions = [];
-    const westernConferenceTeamsPredictions = [];
+  /**
+   * Handle "Save All Predictions" button click
+   * Collect all form data and send it to the server
+   */
+  savePredictionsButton.addEventListener("click", () => {
+    const eastPredictions = [];
+    const westPredictions = [];
 
-    easternConferenceTeams.forEach((teamName) => {
-      const easternConferenceTeamKey = teamName
-        .replace(/\s+/g, "-")
-        .toLowerCase();
-      easternConferenceTeamsPredictions.push({
-        team_name: teamName,
-        seed: document.getElementById(`seed-${easternConferenceTeamKey}`).value,
-        win_total: document.getElementById(
-          `win-total-${easternConferenceTeamKey}`
-        ).value,
-        big_call: document.getElementById(
-          `big-call-${easternConferenceTeamKey}`
-        ).value,
+    // Collect data for each Eastern Conference team
+    eastTeams.forEach((team) => {
+      const key = team.replace(/\s+/g, "-").toLowerCase();
+      eastPredictions.push({
+        team_name: team,
+        seed: document.getElementById(`seed-${key}`).value,
+        win_total: document.getElementById(`win-total-${key}`).value,
+        big_call: document.getElementById(`big-call-${key}`).value,
       });
     });
 
-    westernConferenceTeams.forEach((teamName) => {
-      const westernConferenceTeamKey = teamName
-        .replace(/\s+/g, "-")
-        .toLowerCase();
-      westernConferenceTeamsPredictions.push({
-        team_name: teamName,
-        seed: document.getElementById(`seed-${westernConferenceTeamKey}`).value,
-        win_total: document.getElementById(
-          `win-total-${westernConferenceTeamKey}`
-        ).value,
-        big_call: document.getElementById(
-          `big-call-${westernConferenceTeamKey}`
-        ).value,
+    // Collect data for each Western Conference team
+    westTeams.forEach((team) => {
+      const key = team.replace(/\s+/g, "-").toLowerCase();
+      westPredictions.push({
+        team_name: team,
+        seed: document.getElementById(`seed-${key}`).value,
+        win_total: document.getElementById(`win-total-${key}`).value,
+        big_call: document.getElementById(`big-call-${key}`).value,
       });
     });
 
+    // Extract player awards predictions
     const playerAwardsPredictionsForm = document.querySelector(
       ".player-awards-predictions-form form"
     );
-
     const playerAwards = {
       clutch_player_of_the_year:
         playerAwardsPredictionsForm["clutch-player-of-the-year"].value,
@@ -159,13 +172,14 @@ document.addEventListener("DOMContentLoaded", () => {
         playerAwardsPredictionsForm["sixth-man-of-the-year"].value,
     };
 
+    // Send all data to backend (db)
     fetch("/save-all-nba-regular-season-predictions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         username,
-        easternConference: easternConferenceTeamsPredictions,
-        westernConference: westernConferenceTeamsPredictions,
+        easternConference: eastPredictions,
+        westernConference: westPredictions,
         playerAwards: playerAwards,
       }),
     })
@@ -180,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .catch((err) => {
         console.error(err);
-        alert("Failed to save predictions. Please try again.");
+        alert("Failed to save predictions! Please try again.");
       });
   });
 });

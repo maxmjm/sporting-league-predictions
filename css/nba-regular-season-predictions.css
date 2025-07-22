@@ -1,0 +1,87 @@
+/*------------------------------
+   Predictions Display Section
+--------------------------------*/
+.display-user-predictions-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+.display-user-predictions-section h2,
+.display-user-predictions-section h3 {
+  margin-bottom: 1rem;
+  color: #333;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+/*------------------------------
+   Table Styles
+--------------------------------*/
+.display-user-predictions-section table {
+  width: 100%;
+  margin-bottom: 2rem;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+.display-user-predictions-section caption {
+  margin-bottom: 0.5rem;
+  caption-side: top;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #444;
+}
+.display-user-predictions-section th,
+.display-user-predictions-section td {
+  text-align: left;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
+}
+.display-user-predictions-section th {
+  background-color: #f0f0f0;
+}
+.display-user-predictions-section tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+/*------------------------------
+   Responsive Table Styles
+--------------------------------*/
+@media (max-width: 600px) {
+  .display-user-predictions-section table,
+  .display-user-predictions-section thead,
+  .display-user-predictions-section tbody,
+  .display-user-predictions-section th,
+  .display-user-predictions-section td,
+  .display-user-predictions-section tr {
+    display: block;
+  }
+  .display-user-predictions-section thead {
+    display: none; /* Hide table headers on mobile */
+  }
+  .display-user-predictions-section td {
+    position: relative;
+    padding-left: 50%;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  .display-user-predictions-section td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 45%;
+    padding-left: 1rem;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+  }
+  .display-user-predictions-section tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+}

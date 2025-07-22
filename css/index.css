@@ -1,4 +1,8 @@
-/* Username input styles */
+/*------------------------------
+   Username Input Section
+--------------------------------*/
+
+/* Full-screen centered container for the username form */
 #username-input-container {
   height: 100vh;
   display: flex;
@@ -6,7 +10,9 @@
   align-items: center;
   background-color: #f7f9fc;
 }
-#username-validation-form {
+
+/* Form box styling */
+#username-form {
   width: 300px;
   display: flex;
   flex-direction: column;
@@ -17,17 +23,21 @@
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   background-color: white;
 }
-#username-validation-form label {
+
+/* Input field styling */
+#username-form label {
   font-size: 1.1rem;
   font-weight: 500;
 }
-#username-validation-form input {
+#username-form input {
   padding: 0.6rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 6px;
 }
-#username-validation-form button {
+
+/* Submit button styling */
+#username-form button {
   cursor: pointer;
   padding: 0.6rem;
   border: none;
@@ -35,21 +45,31 @@
   font-size: 1rem;
   color: white;
   background-color: #6f2bd9;
-  transition: background-color 0.5s ease transform 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
-#username-validation-form button:hover {
+#username-form button:hover {
   background-color: #fc8734;
 }
+#username-form button:focus {
+  outline: 2px solid #fc8734;
+  outline-offset: 2px;
+}
 
-/* Sporting league selection menu styles */
-#sporting-league-selection-menu-container {
+/*------------------------------
+   Sporting League Selection Menu
+--------------------------------*/
+
+/* Full-height centered container for league selection */
+#league-menu-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f7f9fc;
 }
-#sporting-league-selection-menu-form {
+
+/* Form box styling */
+#league-menu-form {
   width: 100%;
   max-width: 700px;
   display: flex;
@@ -62,19 +82,22 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   background-color: white;
 }
-#sporting-league-selection-menu-form h2 {
-  margin: 1rem;
-  margin-bottom: 1rem;
+
+/* Section heading styling */
+#league-menu-form h2 {
+  margin: 1rem 0;
   font-size: 1.8rem;
   color: #333;
 }
-.sporting-league-selection-menu-buttons {
+
+/* League buttons styling */
+.league-menu-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   width: 100%;
 }
-.sporting-league-selection-menu-buttons button {
+.league-menu-buttons button {
   padding: 1rem;
   font-size: 1rem;
   background-color: #6f2bd9;
@@ -84,9 +107,29 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
-.sporting-league-selection-menu-buttons button:hover {
+.league-menu-buttons button:hover {
   background-color: #fc8734;
 }
-.sporting-league-selection-menu-buttons button:active {
+.league-menu-buttons button:focus {
+  outline: 2px solid #fc8734;
+  outline-offset: 2px;
+}
+.league-menu-buttons button:active {
   transform: scale(0.97);
+}
+
+/*------------------------------
+   Responsive Styles
+--------------------------------*/
+
+/* Adjust layout for smaller screens */
+@media (max-width: 400px) {
+  #username-form {
+    width: 90%;
+    padding: 1.5rem;
+  }
+
+  #league-menu-form {
+    padding: 1.5rem;
+  }
 }

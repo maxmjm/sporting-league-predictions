@@ -1,60 +1,68 @@
 const sqlite3 = require("sqlite3");
 const path = require("path");
 
-// Path to your database file
-const databaseFilePath = path.join(
+// --- Config ---
+const DB_PATH = path.join(
   __dirname,
   "..",
   "data",
   "sporting-league-predictions.db"
 );
-const databaseConnection = new sqlite3.Database(databaseFilePath);
 
-// Tables to clear – extend this list as needed
-const predictionTablesToClear = [
+// List of tables to wipe clean
+const TABLES_TO_CLEAR = [
   "eastern_conference_predictions",
   "western_conference_predictions",
   "nba_player_awards_predictions",
-  // add AFL, World Cup, etc. tables here when needed
+  // Add more tables (e.g., AFL, World Cup) here
 ];
 
-console.log("🔄 Starting predictions data clearing process...");
-
-databaseConnection.serialize(() => {
-  predictionTablesToClear.forEach((tableName) => {
-    databaseConnection.run(`DELETE FROM ${tableName}`, (error) => {
-      if (error) {
-        console.error(
-          `❌ Failed to clear data from table "${tableName}":`,
-          error.message
-        );
-      } else {
-        console.log(`✅ Data cleared from table "${tableName}"`);
-      }
-    });
+// --- Main Execution Function ---
+function main() {
+  const db = new sqlite3.Database(DB_PATH, (err) => {
+    if (err) {
+      console.error("Failed to connect to database:", err.message);
+      process.exit(1);
+    }
   });
 
-  // Reset auto-increment counters
-  databaseConnection.run(
-    `DELETE FROM sqlite_sequence WHERE name IN (${predictionTablesToClear
-      .map(() => "?")
-      .join(", ")})`,
-    predictionTablesToClear,
-    (error) => {
-      if (error) {
-        console.warn(
-          "⚠️ Failed to reset auto-increment counters:",
-          error.message
-        );
-      } else {
-        console.log("🔁 Auto-increment counters reset for cleared tables.");
-      }
-    }
-  );
-});
+  console.log("Starting predictions data clearing process...");
 
-databaseConnection.close(() => {
-  console.log(
-    "✅ Database connection closed. Predictions data cleanup complete."
-  );
-});
+  db.serialize(() => {
+    // Clear all specified tables
+    TABLES_TO_CLEAR.forEach((table) => {
+      db.run(`DELETE FROM ${table}`, (err) => {
+        if (err) {
+          console.error(`Error clearing table "${table}":`, err.message);
+        } else {
+          console.log(`Cleared data from "${table}"`);
+        }
+      });
+    });
+
+    // Reset the AUTOINCREMENT sequence for affected tables
+    const placeholders = TABLES_TO_CLEAR.map(() => "?").join(", ");
+    db.run(
+      `DELETE FROM sqlite_sequence WHERE name IN (${placeholders})`,
+      TABLES_TO_CLEAR,
+      (err) => {
+        if (err) {
+          console.warn("Could not reset auto-increment counters:", err.message);
+        } else {
+          console.log("Auto-increment counters reset.");
+        }
+      }
+    );
+  });
+
+  // Close database connection
+  db.close((err) => {
+    if (err) {
+      console.error("Error closing database:", err.message);
+    } else {
+      console.log("Database connection closed. Cleanup complete!");
+    }
+  });
+}
+
+main();

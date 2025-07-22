@@ -1,9 +1,20 @@
-// Navigates user to a specific page
+/**
+ * Navigates user to a specific relative page
+ * @param {string} pageName - the target page (e.g., 'nba-regular-season.html')
+ */
 function navigateToPage(pageName) {
-  window.location.href = `./${pageName}`;
+  if (!pageName || typeof pageName !== "string") {
+    console.warn("Invalid page name provided!");
+    return;
+  }
+  // Sanitise leading/trailing spaces
+  const safePage = pageName.trim();
+  window.location.href = `./${safePage}`;
 }
 
-// Alerts user that the feature is still in development
+/**
+ * Shows an alert to inform users a feature is not yet available
+ */
 function showInDevelopmentAlert() {
-  alert(`Currently in development. Check back later!`);
+  alert(`This feature is currently in development. Check back later!`);
 }
