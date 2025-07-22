@@ -1,18 +1,18 @@
-/* General styles for NBA Regular Season page */
+/* General styles for NBA Regular Season Predictions page */
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f7f9fc;
-  color: #333;
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  background-color: #f7f9fc;
 }
 
 /* Header styles */
 header {
-  background-color: #6f2bd9;
-  color: white;
-  text-align: center;
   padding: 1.5rem 1rem;
+  text-align: center;
+  color: white;
+  background-color: #6f2bd9;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 header h1 {
@@ -22,25 +22,25 @@ header h1 {
 
 /* Section header styles */
 main section {
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 1rem 2rem;
-  max-width: 1000px;
-  background-color: white;
   border-radius: 12px;
+  background-color: white;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 main section h2 {
-  color: #6f2bd9;
-  font-size: 1.5rem;
   margin-bottom: 1rem;
-  border-bottom: 2px solid #eee;
   padding-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #6f2bd9;
+  border-bottom: 2px solid #eee;
 }
 
-/* Team prediction form styles */
+/* Team predictions form styles */
 .team-predictions-form h6 {
-  font-size: 1.1rem;
   margin-bottom: 1.5rem;
+  font-size: 1.1rem;
   color: #222;
 }
 .team-predictions-form label {
@@ -52,21 +52,21 @@ main section h2 {
 .team-predictions-form input,
 .team-predictions-form textarea {
   width: 100%;
-  padding: 0.5rem;
   margin-top: 0.3rem;
+  padding: 0.5rem;
+  font-size: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 1rem;
 }
 .team-predictions-form button {
+  cursor: pointer;
   margin-top: 1.5rem;
   padding: 0.6rem 1rem;
-  background-color: #6f2bd9;
-  color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: 500;
+  background-color: #6f2bd9;
+  color: white;
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
 .team-predictions-form button,
@@ -83,9 +83,9 @@ main section h2 {
 
 /* Player awards form styling */
 .player-awards-predictions-form {
-  background-color: #f2f5fa;
   padding: 1rem;
   border-radius: 10px;
+  background-color: #f2f5fa;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 .player-awards-predictions-form label {
@@ -95,19 +95,19 @@ main section h2 {
 }
 .player-awards-predictions-form input {
   width: 100%;
-  padding: 0.5rem;
   margin-top: 0.3rem;
+  padding: 0.5rem;
   border-radius: 6px;
   border: 1px solid #ccc;
 }
 .player-awards-predictions-form button {
+  cursor: pointer;
   margin-top: 1.2rem;
   padding: 0.6rem 1rem;
-  background-color: #6f2bd9;
-  color: white;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  background-color: #6f2bd9;
+  color: white;
   transition: background-color 0.3s ease;
 }
 .player-awards-predictions-form button:hover {
@@ -117,9 +117,9 @@ main section h2 {
 /* User predictions display */
 .display-user-predictions-section {
   margin-top: 2rem;
-  background-color: #fff;
   padding: 1.5rem;
   border-radius: 10px;
+  background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 .display-user-predictions-section h3 {
@@ -130,20 +130,20 @@ main section h2 {
 /* Tables */
 .display-user-predictions-section table {
   width: 100%;
-  border-collapse: collapse;
   margin-bottom: 2rem;
+  border-collapse: collapse;
 }
 .display-user-predictions-section caption {
-  caption-side: top;
-  font-weight: bold;
-  font-size: 1.1rem;
   margin-bottom: 0.5rem;
+  caption-side: top;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 .display-user-predictions-section th,
 .display-user-predictions-section td {
-  border: 1px solid #ddd;
-  padding: 0.6rem;
   text-align: left;
+  padding: 0.6rem;
+  border: 1px solid #ddd;
 }
 .display-user-predictions-section th {
   background-color: #f0f0f0;

@@ -4,6 +4,6 @@ function navigateToPage(pageName) {
 }
 
 // Alerts user that the feature is still in development
-function showInDevelopment() {
+function showInDevelopmentAlert() {
   alert(`Currently in development. Check back later!`);
 }

@@ -12,15 +12,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const usernameInputContainer = document.getElementById(
     "username-input-container"
   );
-  const leagueSelectionMenu = document.getElementById(
-    "league-selection-container"
+  const sportingLeagueSelectionMenuContainer = document.getElementById(
+    "sporting-league-selection-menu-container"
   );
 
   // Check if a username is already stored in localStorage
   const storedUsername = localStorage.getItem("username");
   if (storedUsername) {
     usernameInputContainer.style.display = "none"; // Hide input if username exists
-    leagueSelectionMenu.style.display = "flex"; // Show league selection menu
+    sportingLeagueSelectionMenuContainer.style.display = "flex"; // Show sporting league selection menu
   }
 
   // Handle form submission for username validation
@@ -34,9 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
       // Store username in localStorage for persistence
       localStorage.setItem("username", username);
 
-      // Transition to main menu
+      // Transition to sporting league selection menu
       usernameInputContainer.style.display = "none";
-      leagueSelectionMenu.style.display = "flex";
+      sportingLeagueSelectionMenuContainer.style.display = "flex";
     } else {
       alert("Please enter a valid username!");
     }

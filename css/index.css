@@ -7,15 +7,15 @@
   background-color: #f7f9fc;
 }
 #username-validation-form {
-  background: white;
-  padding: 2rem;
-  margin: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
   display: flex;
   flex-direction: column;
+  margin: 1rem;
+  padding: 2rem;
   gap: 1rem;
-  width: 300px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
 }
 #username-validation-form label {
   font-size: 1.1rem;
@@ -28,53 +28,53 @@
   border-radius: 6px;
 }
 #username-validation-form button {
-  padding: 0.6rem;
-  background-color: #6f2bd9;
-  color: white;
-  border: none;
-  font-size: 1rem;
-  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease transform 0.15s ease;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: white;
+  background-color: #6f2bd9;
+  transition: background-color 0.5s ease transform 0.3s ease;
 }
 #username-validation-form button:hover {
   background-color: #fc8734;
 }
 
-/* Sporting League selection menu styles */
-#league-selection-container {
+/* Sporting league selection menu styles */
+#sporting-league-selection-menu-container {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   background-color: #f7f9fc;
 }
-#league-selection-form {
+#sporting-league-selection-menu-form {
+  width: 100%;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 2rem 2.5rem;
+  gap: 2rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   background-color: white;
-  gap: 2rem;
-  width: 100%;
-  max-width: 700px;
 }
-#league-selection-form h2 {
-  font-size: 1.8rem;
-  color: #333;
+#sporting-league-selection-menu-form h2 {
   margin: 1rem;
   margin-bottom: 1rem;
+  font-size: 1.8rem;
+  color: #333;
 }
-.league-buttons {
+.sporting-league-selection-menu-buttons {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
   width: 100%;
 }
-.league-buttons button {
+.sporting-league-selection-menu-buttons button {
   padding: 1rem;
   font-size: 1rem;
   background-color: #6f2bd9;
@@ -84,9 +84,9 @@
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.15s ease;
 }
-.league-buttons button:hover {
+.sporting-league-selection-menu-buttons button:hover {
   background-color: #fc8734;
 }
-.league-buttons button:active {
+.sporting-league-selection-menu-buttons button:active {
   transform: scale(0.97);
 }

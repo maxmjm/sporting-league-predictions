@@ -12,7 +12,7 @@
     <script src="/js/index.js" defer></script>
   </head>
   <body>
-    <!-- Username input section -->
+    <!-- Section: username input -->
     <div id="username-input-container">
       <form id="username-validation-form">
         <label for="username-validation-field">Enter your username:</label>
@@ -25,34 +25,36 @@
         <button type="submit">Submit</button>
       </form>
     </div>
-    <!-- Sporting League selection menu (hidden until username is entered) -->
-    <div id="league-selection-container" style="display: none;">
-    <form id="league-selection-form">
-      <h2>Sporting Leagues</h2>
-      <div class="league-buttons">
-        <button type="button" onclick="showInDevelopment()">
-          AFL Post Season
-        </button>
-        <button type="button" onclick="showInDevelopment()">
-          AFL Premiership Season
-        </button>
-        <button type="button" onclick="showInDevelopment()">
-          Champions League Post Season
-        </button>
-        <button type="button" onclick="showInDevelopment()">
-          Champions League Regular Season
-        </button>
-        <button type="button" onclick="showInDevelopment()">
-          NBA Post Season
-        </button>
-        <button
-          type="button"
-          onclick="navigateToPage('nba-regular-season.html')"
-        >
-          NBA Regular Season
-        </button>
-        <button type="button" onclick="showInDevelopment()">World Cup</button>
-      </div>
-    </form>
+    <!-- Section: menu to select sporting league (hidden until username is entered) -->
+    <div id="sporting-league-selection-menu-container" style="display: none">
+      <form id="sporting-league-selection-menu-form">
+        <h2>Sporting Leagues</h2>
+        <div class="sporting-league-selection-menu-buttons">
+          <button type="button" onclick="showInDevelopmentAlert()">
+            AFL Post Season
+          </button>
+          <button type="button" onclick="showInDevelopmentAlert()">
+            AFL Premiership Season
+          </button>
+          <button type="button" onclick="showInDevelopmentAlert()">
+            Champions League Post Season
+          </button>
+          <button type="button" onclick="showInDevelopmentAlert()">
+            Champions League Regular Season
+          </button>
+          <button type="button" onclick="showInDevelopmentAlert()">
+            NBA Post Season
+          </button>
+          <button
+            type="button"
+            onclick="navigateToPage('nba-regular-season.html')"
+          >
+            NBA Regular Season
+          </button>
+          <button type="button" onclick="showInDevelopment()">World Cup</button>
+        </div>
+      </form>
+      <body>
+    </div>
   </body>
 </html>
