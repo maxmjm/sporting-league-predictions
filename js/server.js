@@ -7,16 +7,18 @@ const PORT = 3000;
 
 app.use(express.json());
 
+// ✅ Adjusted path to database from scripts/
 const databaseFilePath = path.join(
   __dirname,
+  "..",
   "data",
   "sporting-league-predictions.db"
 );
-const database = new sqlite3.Database(databaseFilePath);
+const databaseConnection = new sqlite3.Database(databaseFilePath);
 
-// Create tables if they don't exist
-const createDatabaseTables = () => {
-  database.run(`
+// ✅ Create prediction tables if they don't exist
+const createPredictionTablesIfMissing = () => {
+  databaseConnection.run(`
     CREATE TABLE IF NOT EXISTS eastern_conference_predictions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
@@ -28,7 +30,7 @@ const createDatabaseTables = () => {
     )
   `);
 
-  database.run(`
+  databaseConnection.run(`
     CREATE TABLE IF NOT EXISTS western_conference_predictions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
@@ -40,7 +42,7 @@ const createDatabaseTables = () => {
     )
   `);
 
-  database.run(`
+  databaseConnection.run(`
     CREATE TABLE IF NOT EXISTS nba_player_awards_predictions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
@@ -55,26 +57,26 @@ const createDatabaseTables = () => {
   `);
 };
 
-createDatabaseTables();
+createPredictionTablesIfMissing();
 
-// Unified endpoint to save all predictions
+// ✅ Save predictions
 app.post("/save-all-nba-regular-season-predictions", (req, res) => {
   const {
     username,
-    easternConference: easternConferenceTeams,
-    westernConference: westernConferenceTeams,
+    easternConference: easternConferencePredictions,
+    westernConference: westernConferencePredictions,
     playerAwards,
   } = req.body;
 
-  const insertEasternConferencePredictions = database.prepare(`
+  const insertEastern = databaseConnection.prepare(`
     INSERT INTO eastern_conference_predictions (username, team_name, seed, win_total, big_call)
     VALUES (?, ?, ?, ?, ?)
   `);
-  const insertWesternConferencePredictions = database.prepare(`
+  const insertWestern = databaseConnection.prepare(`
     INSERT INTO western_conference_predictions (username, team_name, seed, win_total, big_call)
     VALUES (?, ?, ?, ?, ?)
   `);
-  const insertPlayerAwardsPredictions = database.prepare(`
+  const insertAwards = databaseConnection.prepare(`
     INSERT INTO nba_player_awards_predictions (
       username, most_valuable_player, rookie_of_the_year,
       defensive_player_of_the_year, most_improved_player,
@@ -82,10 +84,10 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
     ) VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
 
-  database.serialize(() => {
+  databaseConnection.serialize(() => {
     try {
-      easternConferenceTeams.forEach((team) => {
-        insertEasternConferencePredictions.run(
+      easternConferencePredictions.forEach((team) => {
+        insertEastern.run(
           username,
           team.team_name,
           team.seed,
@@ -94,8 +96,8 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
         );
       });
 
-      westernConferenceTeams.forEach((team) => {
-        insertWesternConferencePredictions.run(
+      westernConferencePredictions.forEach((team) => {
+        insertWestern.run(
           username,
           team.team_name,
           team.seed,
@@ -104,7 +106,7 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
         );
       });
 
-      insertPlayerAwardsPredictions.run(
+      insertAwards.run(
         username,
         playerAwards.most_valuable_player,
         playerAwards.rookie_of_the_year,
@@ -114,64 +116,73 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
         playerAwards.clutch_player_of_the_year
       );
 
-      insertEasternConferencePredictions.finalize();
-      insertWesternConferencePredictions.finalize();
-      insertPlayerAwardsPredictions.finalize();
+      insertEastern.finalize();
+      insertWestern.finalize();
+      insertAwards.finalize();
 
       res
         .status(200)
-        .send({ message: "All predictions submitted successfully!" });
-    } catch (err) {
-      console.error("Error inserting predictions:", err);
+        .json({ message: "All predictions submitted successfully!" });
+    } catch (error) {
+      console.error("❌ Error inserting predictions:", error);
       res.status(500).send("Failed to submit predictions.");
     }
   });
 });
 
-// Endpoint to fetch all predictions
+// ✅ Fetch predictions
 app.get("/get-all-nba-regular-season-predictions", (req, res) => {
-  const allNBARegularSeasonPredictions = {};
-  const databaseQueries = {
-    easternConference: `SELECT * FROM eastern_conference_predictions`,
-    westernConference: `SELECT * FROM western_conference_predictions`,
-    playerAwards: `SELECT * FROM nba_player_awards_predictions`,
-  };
+  const predictionsResponse = {};
 
-  database.all(databaseQueries.playerAwards, [], (err, playerAwardsRows) => {
-    if (err)
-      return res.status(500).send("Error fetching Player Awards predictions!");
-    allNBARegularSeasonPredictions.playerAwards = playerAwardsRows;
-
-    database.all(databaseQueries.easternConference, [], (err, eastRows) => {
+  databaseConnection.all(
+    "SELECT * FROM nba_player_awards_predictions",
+    [],
+    (err, awardsRows) => {
       if (err)
         return res
           .status(500)
-          .send("Error fetching Eastern Conference predictions!");
-      allNBARegularSeasonPredictions.easternConference = eastRows;
+          .send("Error fetching Player Awards predictions.");
+      predictionsResponse.playerAwards = awardsRows;
 
-      database.all(databaseQueries.westernConference, [], (err, westRows) => {
-        if (err)
-          return res
-            .status(500)
-            .send("Error fetching Western Conference predictions!");
-        allNBARegularSeasonPredictions.westernConference = westRows;
+      databaseConnection.all(
+        "SELECT * FROM eastern_conference_predictions",
+        [],
+        (err, eastRows) => {
+          if (err)
+            return res
+              .status(500)
+              .send("Error fetching Eastern Conference predictions.");
+          predictionsResponse.easternConference = eastRows;
 
-        res.status(200).json(allNBARegularSeasonPredictions);
-      });
-    });
-  });
+          databaseConnection.all(
+            "SELECT * FROM western_conference_predictions",
+            [],
+            (err, westRows) => {
+              if (err)
+                return res
+                  .status(500)
+                  .send("Error fetching Western Conference predictions.");
+              predictionsResponse.westernConference = westRows;
+
+              res.status(200).json(predictionsResponse);
+            }
+          );
+        }
+      );
+    }
+  );
 });
 
-// Serve front-end static files
+// ✅ Serve static frontend files (adjusted for scripts/ location)
+app.use(express.static(path.join(__dirname, "..", "html")));
+app.use("/css", express.static(path.join(__dirname, "..", "css")));
+app.use("/js", express.static(path.join(__dirname, "..", "js")));
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "html", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "html", "index.html"));
 });
 
-app.use(express.static(path.join(__dirname, "html")));
-app.use("/css", express.static(path.join(__dirname, "css")));
-app.use("/js", express.static(path.join(__dirname, "js")));
-
-// Start server
+// ✅ Start the server
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`✅ Server running at http://localhost:${PORT}`);
 });

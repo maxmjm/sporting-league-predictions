@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node js/server.js",
+    "clear-predictions-data": "node js/clear-predictions-data.js"
   },
   "repository": {
     "type": "git",
