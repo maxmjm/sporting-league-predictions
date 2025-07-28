@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   /**
    * Create a form block for player awards predictions
    */
-  function createPlayerAwardsPredictionsForm() {
+  function renderPlayerAwardsPredictionsForm() {
     const form = document.createElement("form");
 
     // Form HTML components
@@ -121,7 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Render player awards form
-  playerAwardsContainer.appendChild(createPlayerAwardsPredictionsForm());
+  playerAwardsContainer.appendChild(renderPlayerAwardsPredictionsForm());
 
   /**
    * Handle "Save All Predictions" button click
