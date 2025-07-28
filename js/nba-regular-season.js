@@ -96,21 +96,29 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderPlayerAwardsPredictionsForm() {
     const form = document.createElement("form");
 
+    const awardFields = [
+      "Most Valuable Player",
+      "Rookie of the Year",
+      "Defensive Player of the Year",
+      "Most Improved Player",
+      "Sixth Man of the Year",
+      "Clutch Player of the Year",
+    ];
+
     // Form HTML components
-    form.innerHTML = `
-      <label for="clutch-player-of-the-year">Clutch Player of the Year:</label>
-      <input type="text" id="clutch-player-of-the-year" name="clutch-player-of-the-year" required />
-      <label for="defensive-player-of-the-year">Defensive Player of the Year:</label>
-      <input type="text" id="defensive-player-of-the-year" name="defensive-player-of-the-year" required />
-      <label for="most-valuable-player">Most Valuable Player:</label>
-      <input type="text" id="most-valuable-player" name="most-valuable-player" required />
-      <label for="most-improved-player">Most Improved Player:</label>
-      <input type="text" id="most-improved-player" name="most-improved-player" required />
-      <label for="rookie-of-the-year">Rookie of the Year:</label>
-      <input type="text" id="rookie-of-the-year" name="rookie-of-the-year" required />
-      <label for="sixth-man-of-the-year">Sixth Man of the Year:</label>
-      <input type="text" id="sixth-man-of-the-year" name="sixth-man-of-the-year" required />
-    `;
+    let html = "";
+    awardFields.forEach((label) => {
+      const idBase = label.toLowerCase().replace(/\s+/g, "-");
+      html += `<fieldset><legend>${label}</legend>`;
+      for (let i = 1; i <= 3; i++) {
+        html += `
+        <label for="${idBase}-${i}">#${i}:</label>
+        <input type="text" id="${idBase}-${i}" name="${idBase}-${i}" required />
+      `;
+      }
+      html += `</fieldset>`;
+    });
+    form.innerHTML = html;
 
     // Wrap the awards form form in a container for styling
     const wrapper = document.createElement("div");
@@ -164,18 +172,36 @@ document.addEventListener("DOMContentLoaded", () => {
       ".player-awards-predictions-form form"
     );
     const playerAwards = {
-      clutch_player_of_the_year:
-        playerAwardsPredictionsForm["clutch-player-of-the-year"].value,
-      defensive_player_of_the_year:
-        playerAwardsPredictionsForm["defensive-player-of-the-year"].value,
-      most_valuable_player:
-        playerAwardsPredictionsForm["most-valuable-player"].value,
-      most_improved_player:
-        playerAwardsPredictionsForm["most-improved-player"].value,
-      rookie_of_the_year:
-        playerAwardsPredictionsForm["rookie-of-the-year"].value,
-      sixth_man_of_the_year:
-        playerAwardsPredictionsForm["sixth-man-of-the-year"].value,
+      most_valuable_player: [
+        playerAwardsPredictionsForm["most-valuable-player-1"].value,
+        playerAwardsPredictionsForm["most-valuable-player-2"].value,
+        playerAwardsPredictionsForm["most-valuable-player-3"].value,
+      ],
+      rookie_of_the_year: [
+        playerAwardsPredictionsForm["rookie-of-the-year-1"].value,
+        playerAwardsPredictionsForm["rookie-of-the-year-2"].value,
+        playerAwardsPredictionsForm["rookie-of-the-year-3"].value,
+      ],
+      defensive_player_of_the_year: [
+        playerAwardsPredictionsForm["defensive-player-of-the-year-1"].value,
+        playerAwardsPredictionsForm["defensive-player-of-the-year-2"].value,
+        playerAwardsPredictionsForm["defensive-player-of-the-year-3"].value,
+      ],
+      most_improved_player: [
+        playerAwardsPredictionsForm["most-improved-player-1"].value,
+        playerAwardsPredictionsForm["most-improved-player-2"].value,
+        playerAwardsPredictionsForm["most-improved-player-3"].value,
+      ],
+      sixth_man_of_the_year: [
+        playerAwardsPredictionsForm["sixth-man-of-the-year-1"].value,
+        playerAwardsPredictionsForm["sixth-man-of-the-year-2"].value,
+        playerAwardsPredictionsForm["sixth-man-of-the-year-3"].value,
+      ],
+      clutch_player_of_the_year: [
+        playerAwardsPredictionsForm["clutch-player-of-the-year-1"].value,
+        playerAwardsPredictionsForm["clutch-player-of-the-year-2"].value,
+        playerAwardsPredictionsForm["clutch-player-of-the-year-3"].value,
+      ],
     };
 
     // Send all data to backend (db)

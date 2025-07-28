@@ -47,12 +47,24 @@ const createTables = () => {
     CREATE TABLE IF NOT EXISTS nba_player_awards_predictions (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       username TEXT NOT NULL,
-      most_valuable_player TEXT,
-      rookie_of_the_year TEXT,
-      defensive_player_of_the_year TEXT,
-      most_improved_player TEXT,
-      sixth_man_of_the_year TEXT,
-      clutch_player_of_the_year TEXT,
+      most_valuable_player_1 TEXT,
+      most_valuable_player_2 TEXT,
+      most_valuable_player_3 TEXT,
+      rookie_of_the_year_1 TEXT,
+      rookie_of_the_year_2 TEXT,
+      rookie_of_the_year_3 TEXT,
+      defensive_player_of_the_year_1 TEXT,
+      defensive_player_of_the_year_2 TEXT,
+      defensive_player_of_the_year_3 TEXT,
+      most_improved_player_1 TEXT,
+      most_improved_player_2 TEXT,
+      most_improved_player_3 TEXT,
+      sixth_man_of_the_year_1 TEXT,
+      sixth_man_of_the_year_2 TEXT,
+      sixth_man_of_the_year_3 TEXT,
+      clutch_player_of_the_year_1 TEXT,
+      clutch_player_of_the_year_2 TEXT,
+      clutch_player_of_the_year_3 TEXT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -87,10 +99,14 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
   `);
   const insertAwards = db.prepare(`
     INSERT INTO nba_player_awards_predictions (
-      username, most_valuable_player, rookie_of_the_year,
-      defensive_player_of_the_year, most_improved_player,
-      sixth_man_of_the_year, clutch_player_of_the_year
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      username,
+      most_valuable_player_1, most_valuable_player_2, most_valuable_player_3,
+      rookie_of_the_year_1, rookie_of_the_year_2, rookie_of_the_year_3,
+      defensive_player_of_the_year_1, defensive_player_of_the_year_2, defensive_player_of_the_year_3,
+      most_improved_player_1, most_improved_player_2, most_improved_player_3,
+      sixth_man_of_the_year_1, sixth_man_of_the_year_2, sixth_man_of_the_year_3,
+      clutch_player_of_the_year_1, clutch_player_of_the_year_2, clutch_player_of_the_year_3
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   db.serialize(() => {
@@ -117,12 +133,12 @@ app.post("/save-all-nba-regular-season-predictions", (req, res) => {
 
       insertAwards.run(
         username,
-        playerAwards.most_valuable_player || null,
-        playerAwards.rookie_of_the_year || null,
-        playerAwards.defensive_player_of_the_year || null,
-        playerAwards.most_improved_player || null,
-        playerAwards.sixth_man_of_the_year || null,
-        playerAwards.clutch_player_of_the_year || null
+        ...(playerAwards.most_valuable_player || []),
+        ...(playerAwards.rookie_of_the_year || []),
+        ...(playerAwards.defensive_player_of_the_year || []),
+        ...(playerAwards.most_improved_player || []),
+        ...(playerAwards.sixth_man_of_the_year || []),
+        ...(playerAwards.clutch_player_of_the_year || [])
       );
 
       res
