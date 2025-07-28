@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "display-predictions-overview-container"
   );
   if (!container) {
-    console.error("Prediction container not found!");
+    console.error("Predictions container not found!");
     return;
   }
 

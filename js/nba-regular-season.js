@@ -49,8 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const playerAwardsContainer = document.getElementById(
     "player-awards-container"
   );
-  const savePredictionsButton = document.getElementById(
-    "save-all-predictions-button"
+  const submitPredictionsButton = document.getElementById(
+    "submit-all-predictions-button"
   );
 
   /**
@@ -127,11 +127,17 @@ document.addEventListener("DOMContentLoaded", () => {
    * Handle "Save All Predictions" button click
    * Collect all form data and send it to the server
    */
-  savePredictionsButton.addEventListener("click", () => {
+  submitPredictionsButton.addEventListener("click", () => {
+    // Confirm entered predictions
+    const confirmPredictions = confirm(
+      "Are you sure you want to submit all your predictions?"
+    );
+    if (!confirmPredictions) return;
+
+    // Collect data for each Eastern Conference team
     const eastPredictions = [];
     const westPredictions = [];
 
-    // Collect data for each Eastern Conference team
     eastTeams.forEach((team) => {
       const key = team.replace(/\s+/g, "-").toLowerCase();
       eastPredictions.push({
