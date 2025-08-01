@@ -1,87 +1,89 @@
 /*------------------------------
-   Predictions Display Section
+   Page Title Styles
 --------------------------------*/
-.display-user-predictions-section {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+header {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  background-color: #6f2bd9;
+  color: white;
 }
-.display-user-predictions-section h2,
-.display-user-predictions-section h3 {
-  margin-bottom: 1rem;
-  color: #333;
+
+/*------------------------------
+   Main Container
+--------------------------------*/
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+/*------------------------------
+   Section Styles
+--------------------------------*/
+section h2 {
   font-size: 1.5rem;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #444;
+  padding-bottom: 0.25rem;
+  color: #222;
+}
+section {
+  margin-bottom: 2.5rem; /* Bottom spacing */
 }
 
 /*------------------------------
    Table Styles
 --------------------------------*/
-.display-user-predictions-section table {
+table {
   width: 100%;
-  margin-bottom: 2rem;
   border-collapse: collapse;
-  font-size: 0.95rem;
+  margin-top: 1.5rem;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
 }
-.display-user-predictions-section caption {
-  margin-bottom: 0.5rem;
-  caption-side: top;
-  font-size: 1.1rem;
-  font-weight: bold;
-  color: #444;
+thead {
+  background-color: #6f2bd9;
+  color: white;
 }
-.display-user-predictions-section th,
-.display-user-predictions-section td {
+th, td {
+  padding: 0.75rem, 1rem;
   text-align: left;
-  padding: 0.6rem;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
+  text-align: center;
 }
-.display-user-predictions-section th {
-  background-color: #f0f0f0;
+tbody tr:nth-child(even) { /* Alternating row colours */
+  background-color: #f8f9fa;
 }
-.display-user-predictions-section tr:nth-child(even) {
-  background-color: #fafafa;
+tbody tr:hover { /* Highlight hover */
+  background-color: #6e2bd947;
 }
 
 /*------------------------------
-   Responsive Table Styles
+   Responsive Styles
 --------------------------------*/
-@media (max-width: 600px) {
-  .display-user-predictions-section table,
-  .display-user-predictions-section thead,
-  .display-user-predictions-section tbody,
-  .display-user-predictions-section th,
-  .display-user-predictions-section td,
-  .display-user-predictions-section tr {
-    display: block;
+@media (max-width: 768px) {
+  th, td {
+    font-size: 0.85rem;
+    padding: 0.5rem;
   }
-  .display-user-predictions-section thead {
-    display: none; /* Hide table headers on mobile */
+
+  h1 {
+    font-size: 1.6rem;
+    text-align: center;
   }
-  .display-user-predictions-section td {
-    position: relative;
-    padding-left: 50%;
-    text-align: left;
-    border: none;
-    border-bottom: 1px solid #eee;
+
+  section h2 {
+    font-size: 1.2rem;
   }
-  .display-user-predictions-section td::before {
-    content: attr(data-label);
-    position: absolute;
-    left: 0;
-    width: 45%;
-    padding-left: 1rem;
-    font-weight: bold;
-    color: #555;
-    white-space: nowrap;
-  }
-  .display-user-predictions-section tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    overflow: hidden;
+
+  main {
+    padding: 1rem;
   }
 }
