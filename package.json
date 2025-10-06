@@ -1,29 +1,38 @@
 {
   "name": "sporting-league-predictions",
+  "description": "Sporting League Predictions API (PostgreSQL on Render)",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "js/server.js",
   "type": "commonjs",
+
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "express": "^4.18.2",
-    "pg": "^8.16.3",
-    "sqlite3": "^5.1.6"
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pg": "^8.13.1"
   },
+
+  "engines": {
+    "node": ">=20"
+  },
+
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"No tests yet\" && exit 0",
     "start": "node js/server.js",
     "clear-predictions-data": "node js/clear-predictions-data.js"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/maxmjm/sporting-league-predictions.git"
   },
+
   "keywords": [],
-  "author": "",
+  "author": "Maxime Morard",
   "license": "ISC",
+
   "bugs": {
     "url": "https://github.com/maxmjm/sporting-league-predictions/issues"
   },
-  "homepage": "https://github.com/maxmjm/sporting-league-predictions#readme",
-  "description": ""
+
+  "homepage": "https://github.com/maxmjm/sporting-league-predictions#readme"
 }
