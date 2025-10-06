@@ -67,9 +67,9 @@ document.addEventListener("DOMContentLoaded", () => {
     form.innerHTML = `
       <h6>${team}</h6>
       <label for="seed-${key}">Seed:</label>
-      <input type="number" id="seed-${key}" name="seed" min="1" max="15" required />
+      <input type="number" id="seed-${key}" name="seed" min="1" max="15" />
       <label for="win-total-${key}">Win Total:</label>
-      <input type="number" id="win-total-${key}" name="win-total" min="0" max="82" required />
+      <input type="number" id="win-total-${key}" name="win-total" min="0" max="82" />
       <label for="big-call-${key}">Big Call:</label>
       <textarea id="big-call-${key}" name="big-call" rows="3"></textarea>
     `;
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let i = 1; i <= 3; i++) {
         html += `
         <label for="${idBase}-${i}">#${i}:</label>
-        <input type="text" id="${idBase}-${i}" name="${idBase}-${i}" required />
+        <input type="text" id="${idBase}-${i}" name="${idBase}-${i}" />
       `;
       }
       html += `</fieldset>`;
@@ -218,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
         username,
         easternConference: eastPredictions,
         westernConference: westPredictions,
-        playerAwards: playerAwards,
+        playerAwards,
       }),
     })
       .then((res) => {
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(() => {
         alert("All predictions saved!");
         localStorage.setItem("nbaRegularSeasonPredictionsSaved", "true");
-        window.location.href = "nba-regular-season-predictions.html";
+        window.location.href = "nba-in-season-predictions.html";
       })
       .catch((err) => {
         console.error(err);

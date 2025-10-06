@@ -14,6 +14,26 @@ const pool = new Pool({
 
 app.use(express.json());
 
+// Helpers
+const toIntOrNull = (v) => {
+  if (v === null || v === undefined || v === "") return null;
+  const n = Number(v);
+  return Number.isInteger(n) ? n : null; // silently null if not an int
+};
+const nullIfEmpty = (v) => (v === "" ? null : v);
+
+const pickThree = (arr = []) => [
+  arr?.[0] ?? null,
+  arr?.[1] ?? null,
+  arr?.[2] ?? null,
+];
+
+// Call table creation on startup
+createTables().catch((e) => {
+  console.error("Table init failed:", e);
+  process.exit(1);
+});
+
 // Serve static files
 app.use(express.static(path.join(__dirname, "..", "html")));
 app.use("/css", express.static(path.join(__dirname, "..", "css")));
@@ -27,8 +47,8 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         username TEXT NOT NULL,
         team_name TEXT NOT NULL,
-        seed INTEGER NOT NULL,
-        win_total INTEGER NOT NULL,
+        seed INTEGER,
+        win_total INTEGER,
         big_call TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -39,8 +59,8 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         username TEXT NOT NULL,
         team_name TEXT NOT NULL,
-        seed INTEGER NOT NULL,
-        win_total INTEGER NOT NULL,
+        seed INTEGER,
+        win_total INTEGER,
         big_call TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -82,12 +102,6 @@ async function createTables() {
   }
 }
 
-const pickThree = (arr = []) => [
-  arr[0] ?? null,
-  arr[1] ?? null,
-  arr[2] ?? null,
-];
-
 // POST: Save all predictions
 app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
   const {
@@ -110,46 +124,50 @@ app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
   try {
     await client.query("BEGIN");
 
-    // Insert east teams
+    // EAST
     for (const team of easternConference) {
+      if (!team?.team_name) continue; // allow partial rows; skip totally blank
       await client.query(
         `INSERT INTO eastern_conference_predictions (username, team_name, seed, win_total, big_call)
          VALUES ($1, $2, $3, $4, $5)`,
         [
           username,
           team.team_name,
-          team.seed,
-          team.win_total,
-          team.big_call || null,
+          toIntOrNull(team.seed), // blank or bad -> NULL
+          toIntOrNull(team.win_total), // blank or bad -> NULL
+          nullIfEmpty(team.big_call),
         ]
       );
     }
 
-    // Insert west teams
+    // WEST
     for (const team of westernConference) {
+      if (!team?.team_name) continue;
       await client.query(
         `INSERT INTO western_conference_predictions (username, team_name, seed, win_total, big_call)
          VALUES ($1, $2, $3, $4, $5)`,
         [
           username,
           team.team_name,
-          team.seed,
-          team.win_total,
-          team.big_call || null,
+          toIntOrNull(team.seed),
+          toIntOrNull(team.win_total),
+          nullIfEmpty(team.big_call),
         ]
       );
     }
 
-    // Build awards array with 22 values (1 username + 7 categories * 3)
+    // Awards: coerce "" -> NULL, ensure 3 slots each
+    const as3 = (arr) =>
+      pickThree(Array.isArray(arr) ? arr : []).map(nullIfEmpty);
     const awardsValues = [
       username,
-      ...pick3(playerAwards.most_valuable_player),
-      ...pick3(playerAwards.rookie_of_the_year),
-      ...pick3(playerAwards.defensive_player_of_the_year),
-      ...pick3(playerAwards.most_improved_player),
-      ...pick3(playerAwards.sixth_man_of_the_year),
-      ...pick3(playerAwards.clutch_player_of_the_year),
-      ...pick3(playerAwards.coach_of_the_year),
+      ...as3(playerAwards.most_valuable_player),
+      ...as3(playerAwards.rookie_of_the_year),
+      ...as3(playerAwards.defensive_player_of_the_year),
+      ...as3(playerAwards.most_improved_player),
+      ...as3(playerAwards.sixth_man_of_the_year),
+      ...as3(playerAwards.clutch_player_of_the_year),
+      ...as3(playerAwards.coach_of_the_year),
     ];
 
     // Insert player awards
@@ -206,15 +224,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "html", "index.html"));
 });
 
-// Start server only after tables are ready
-(async () => {
-  try {
-    await createTables();
-    app.listen(PORT, () => {
-      console.log(`✅ Server running at http://localhost:${PORT}`);
-    });
-  } catch (err) {
-    console.error("❌ Failed to initialize:", err);
-    process.exit(1);
-  }
-})();
+// Start server
+app.listen(PORT, () => {
+  console.log(`✅ Server running at http://localhost:${PORT}`);
+});

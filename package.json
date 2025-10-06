@@ -18,7 +18,8 @@
   "scripts": {
     "test": "echo \"No tests yet\" && exit 0",
     "start": "node js/server.js",
-    "clear-predictions-data": "node js/clear-predictions-data.js"
+    "nba-in-season-clear-predictions-data": "node js/nba-in-season-clear-predictions-data.js",
+    "nba-in-season-hard-reset-data": "node js/nba-in-season-hard-reset-data"
   },
 
   "repository": {
