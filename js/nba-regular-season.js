@@ -103,6 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "Most Improved Player",
       "Sixth Man of the Year",
       "Clutch Player of the Year",
+      "Coach of the Year",
     ];
 
     // Form HTML components
@@ -201,6 +202,11 @@ document.addEventListener("DOMContentLoaded", () => {
         playerAwardsPredictionsForm["clutch-player-of-the-year-1"].value,
         playerAwardsPredictionsForm["clutch-player-of-the-year-2"].value,
         playerAwardsPredictionsForm["clutch-player-of-the-year-3"].value,
+      ],
+      coach_of_the_year: [
+        playerAwardsPredictionsForm["coach-of-the-year-1"].value,
+        playerAwardsPredictionsForm["coach-of-the-year-2"].value,
+        playerAwardsPredictionsForm["coach-of-the-year-3"].value,
       ],
     };
 

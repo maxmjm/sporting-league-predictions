@@ -68,6 +68,9 @@ async function createTables() {
         clutch_player_of_the_year_1 TEXT,
         clutch_player_of_the_year_2 TEXT,
         clutch_player_of_the_year_3 TEXT,
+        coach_of_the_year_1 TEXT,
+        coach_of_the_year_2 TEXT,
+        coach_of_the_year_3 TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -141,8 +144,9 @@ app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
         defensive_player_of_the_year_1, defensive_player_of_the_year_2, defensive_player_of_the_year_3,
         most_improved_player_1, most_improved_player_2, most_improved_player_3,
         sixth_man_of_the_year_1, sixth_man_of_the_year_2, sixth_man_of_the_year_3,
-        clutch_player_of_the_year_1, clutch_player_of_the_year_2, clutch_player_of_the_year_3
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
+        clutch_player_of_the_year_1, clutch_player_of_the_year_2, clutch_player_of_the_year_3,
+        coach_of_the_year_1, coach_of_the_year_2, coach_of_the_year_3
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)`,
       [
         username,
         ...(playerAwards.most_valuable_player || []),
@@ -151,6 +155,7 @@ app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
         ...(playerAwards.most_improved_player || []),
         ...(playerAwards.sixth_man_of_the_year || []),
         ...(playerAwards.clutch_player_of_the_year || []),
+        ...(playerAwards.coach_of_the_year || []),
       ]
     );
 
