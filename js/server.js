@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
 // PostgreSQL connection pool
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Required by Render/Railway
+  ssl: { rejectUnauthorized: false }, // Required by Render
 });
 
 app.use(express.json());
@@ -78,10 +78,15 @@ async function createTables() {
     console.log("✅ PostgreSQL tables ready.");
   } catch (err) {
     console.error("❌ Error creating tables:", err);
+    throw err;
   }
 }
 
-createTables();
+const pickThree = (arr = []) => [
+  arr[0] ?? null,
+  arr[1] ?? null,
+  arr[2] ?? null,
+];
 
 // POST: Save all predictions
 app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
@@ -135,6 +140,18 @@ app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
       );
     }
 
+    // Build awards array with 22 values (1 username + 7 categories * 3)
+    const awardsValues = [
+      username,
+      ...pick3(playerAwards.most_valuable_player),
+      ...pick3(playerAwards.rookie_of_the_year),
+      ...pick3(playerAwards.defensive_player_of_the_year),
+      ...pick3(playerAwards.most_improved_player),
+      ...pick3(playerAwards.sixth_man_of_the_year),
+      ...pick3(playerAwards.clutch_player_of_the_year),
+      ...pick3(playerAwards.coach_of_the_year),
+    ];
+
     // Insert player awards
     await client.query(
       `INSERT INTO nba_player_awards_predictions (
@@ -147,16 +164,7 @@ app.post("/save-all-nba-regular-season-predictions", async (req, res) => {
         clutch_player_of_the_year_1, clutch_player_of_the_year_2, clutch_player_of_the_year_3,
         coach_of_the_year_1, coach_of_the_year_2, coach_of_the_year_3
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22)`,
-      [
-        username,
-        ...(playerAwards.most_valuable_player || []),
-        ...(playerAwards.rookie_of_the_year || []),
-        ...(playerAwards.defensive_player_of_the_year || []),
-        ...(playerAwards.most_improved_player || []),
-        ...(playerAwards.sixth_man_of_the_year || []),
-        ...(playerAwards.clutch_player_of_the_year || []),
-        ...(playerAwards.coach_of_the_year || []),
-      ]
+      awardsValues
     );
 
     await client.query("COMMIT");
@@ -198,7 +206,15 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "html", "index.html"));
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-});
+// Start server only after tables are ready
+(async () => {
+  try {
+    await createTables();
+    app.listen(PORT, () => {
+      console.log(`✅ Server running at http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ Failed to initialize:", err);
+    process.exit(1);
+  }
+})();
